@@ -25,7 +25,7 @@ close.addEventListener('click', function () {
 });
 
 window.addEventListener('click', function (event) {
-    if (event.target === modal) {
+    if (event.target === desc) {
         desc.style.display = 'none';
     }
 });

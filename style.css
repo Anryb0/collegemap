@@ -1,6 +1,6 @@
 body {
-    background: rgb(46,46,46);
-    background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
+    background: -webkit-linear-gradient(90deg, #354e69,#000000);
+    background: linear-gradient(90deg, #354e69,#000000);
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -8,16 +8,16 @@ body {
 h1 {
     position: sticky;
     margin-bottom: 10px;
-    margin-top: 30px;
+    margin-top: 15px;
 }
 header, footer, nav {
     text-align: center;
 }
 .reg {
-    position: absolute;
     top: 10px;
     right: 10px;
     font-size: 10px;
+    border: 1px solid white;
 }
 .elements {
     display: grid;
@@ -34,10 +34,11 @@ header, footer, nav {
 }
 .element {
     text-align: center;
-    border: 1px solid #ccc;
+    border: 1px solid white;
     border-radius: 5px;
     padding: 10px;
     transition: transform 0.3s;
+    background: #4169E1;
 }   
 .element:hover {
     transform: scale(1.05);
@@ -46,6 +47,9 @@ header, footer, nav {
     width: 240px;
     height: 160px;
     border-radius: 5px;
+}
+hr {
+    color: grey;
 }
 .element h3 {
     margin: 10px 0;
@@ -65,17 +69,22 @@ button {
 button:hover {
     background-color: black;
 }
-.elements a {
-    padding: 5px 10px;
+a {
+    padding: 5px;
     background-color: green;
     color: white;
     font-weight: bold;
     margin: 5px;
     border-radius: 5px;
     text-decoration: none;
+    border: 1px solid white;
+    font-size: 15px;
+    justify-content: center;
 }
-.elements a:hover {
+
+a:hover {
     background-color: black;
+    cursor: pointer;
 }
 /*окно с описанием*/ 
 .desc {
@@ -98,7 +107,7 @@ button:hover {
     border-radius: 5px;
 }
 .close {
-    color: #aaa;
+    color: white;
     float: right;
     font-size: 28px;
     font-weight: bold;
