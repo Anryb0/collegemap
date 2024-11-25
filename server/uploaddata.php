@@ -13,9 +13,12 @@ $sb = ($_POST['sb'] == 'NaN') ? null : $_POST['sb'];
 $sl = ($_POST['sl'] == 'NaN') ? null : $_POST['sl'];
 $sr = ($_POST['sr'] == 'NaN') ? null : $_POST['sr'];
 
+$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$randomString = substr(str_shuffle($characters), 0, 10);
+
 $uploadDir = 'images/';
-$fileName = basename($_FILES['file']['name']);
-$filePath = __DIR__ . '/../images/' . $fileName;;
+$fileName = $randomString . basename($_FILES['file']['name']) ;
+$filePath = __DIR__ . '/../images/' . $fileName;
 $fileType = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
 
 $stmt = $conn->prepare("select id from users where login = ?");

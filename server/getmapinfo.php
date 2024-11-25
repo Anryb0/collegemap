@@ -4,10 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header('Content-Type: application/json');
 
-$maxMapId = $_POST['maxMapId'];
-
-$stmt = $conn->prepare("SELECT name, description, photo_url, graphurl, ispanoram FROM maps WHERE id between 1 and ?");
-$stmt->bind_param("i", $maxMapId);
+$stmt = $conn->prepare("SELECT name, description, photo_url, graphurl, ispanoram FROM maps");
 $stmt->execute();
 $result = $stmt->get_result();
 $data = [];

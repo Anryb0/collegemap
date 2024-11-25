@@ -7,6 +7,20 @@ const map = document.getElementById('map'); // схема
 const change = document.getElementById('switch'); // кнопка смена режима
 const container = document.getElementById('container'); // контейнер для панорамы или фото
 const errortext = document.getElementById('error'); // текст ошибки
+const bedit = document.getElementById('bedit'); // кнопка добавления фото  
+const close = document.querySelectorAll('.close');
+
+const pgbar = document.getElementById('pgbar'); // прогрессбар загрузки файла
+
+// формы для отправки на сервер
+const sphotoid = document.getElementById('i2');
+const sf = document.getElementById('i3');
+const sb = document.getElementById('i4');
+const sl = document.getElementById('i5');
+const sr = document.getElementById('i6');
+const file = document.getElementById('i7');
+const sname = document.getElementById('i8');
+const sopisanie = document.getElementById('i9');
 
 let currentphoto = 0; // картинка по умолчанию
 let isInitialized = false; // флаг инициализации
@@ -28,9 +42,14 @@ if(localStorage.getItem('viewmode') && !(localStorage.getItem('mapid') && mapId 
 else {
     ispanoram = urlParams.get('ispanoram');
 }
-// добавляем для корректного переключения режимов отображения в будущем
-localStorage.setItem('mapid', mapId)
 
+if(localStorage.getItem('login')){
+    bedit.style.display = 'inline-block';
+}
+if(localStorage.getItem('curph') && localStorage.getItem('mapid') == mapId){
+    currentphoto = parseInt(localStorage.getItem('curph'))
+}
+localStorage.setItem('mapid', mapId);
 // выводим название текущей карты и рекомендованный режим просмотра
 if(urlParams.get('ispanoram') == '0'){
     document.getElementById('mapname').innerText = 'Текущая карта: ' + urlParams.get('name') + '. Рекомендованный режим просмотра: фото.';
@@ -38,6 +57,90 @@ if(urlParams.get('ispanoram') == '0'){
 else{
     document.getElementById('mapname').innerText = 'Текущая карта: ' + urlParams.get('name') + '. Рекомендованный режим просмотра: панорама.';
 }
+function hide(element) {
+    element.classList.add('fade-out'); 
+    setTimeout(function() {
+        element.style.display = 'none'; 
+        element.classList.remove('fade-out');
+    }, 300);
+}
+close.forEach(function(item){
+   item.addEventListener('click', function() {
+        hide(edit);
+    }); 
+});
+document.getElementById('bedit').addEventListener('click', function() {
+   edit.style.display = 'inline-block'; 
+});
+// при нажатии на кнопку отправки данных
+send.addEventListener('click', function() {
+    // данные для отправки на сервер
+    let formData = new FormData();
+    formData.append('smapid', mapId);
+    formData.append('sf', parseInt(sf.value));
+    formData.append('sb', parseInt(sb.value));
+    formData.append('sl', parseInt(sl.value));
+    formData.append('sr', parseInt(sr.value));
+    formData.append('login', localStorage.getItem('login'));
+    formData.append('name', sname.value);
+    formData.append('opisanie', sopisanie.value);
+    document.getElementById('percent').style.display = 'none'
+    pgbar.style.display = 'none';
+    sendinfo.style.display = 'none';
+    // запрос на сервер выполняется только если поля заполнены
+    if (file.files.length === 1 && sname.value && sopisanie.value) {
+        formData.append('file', file.files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'server/uploaddata.php', true);
+        pgbar.style.display = 'inline-block';
+        document.getElementById('percent').style.display = 'inline'
+        xhr.upload.onprogress = function(event) {
+            if (event.lengthComputable) {
+                var percent = (event.loaded / event.total) * 100;
+                pgbar.value = percent;
+                document.getElementById('percent').innerText = Math.round(percent) + ' %'
+            }
+        };
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    document.getElementById('percent').style.display = 'none'
+                    sendinfo.innerText = '✔';
+                    num2 = data.message;
+                    sendinfo.style.background = 'green';
+                    sendinfo.style.display = 'inline-block';
+                    formData = new FormData();
+                    formData.append('b', parseInt(sb.value));
+                    formData.append('l', parseInt(sl.value));
+                    formData.append('r', parseInt(sr.value));
+                    formData.append('mapid', mapId);
+                    formData.append('num', num2);
+
+                    fetch('server/autocomplete.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    location.reload();
+                } else {
+                    sendinfo.innerText = data.message;
+                    sendinfo.style.background = 'red';
+                    sendinfo.style.display = 'inline-block';
+                }
+            } else {
+                sendinfo.innerText = 'Ошибка загрузки: ' + xhr.status;
+                sendinfo.style.background = 'red';
+                sendinfo.style.display = 'inline-block';
+            }
+            pgbar.style.display = 'none';
+        };
+        xhr.send(formData);
+    } else {
+        sendinfo.innerText = 'Пожалуйста, заполните обязательные поля. Для каждой записи необходимо добавить по 1 фото.';
+        sendinfo.style.background = 'red';
+        sendinfo.style.display = 'inline-block';
+    }
+});
 
 // код для непанорамных карт 
 if(ispanoram == '0'){
@@ -69,6 +172,7 @@ if(ispanoram == '0'){
                 renderButtons(l, r, f, b);
                 errortext.innerText = 'Текущая позиция: ' + (photoId + 1) + ') ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login + ', описание: ' + photosData[photoId].opisanie;
                 errortext.style.background = 'green';
+                localStorage.setItem('curph',photoId)
             }
         }
         else {
@@ -235,6 +339,7 @@ if (ispanoram == '1') {
             renderButtons(l, r, f, b);
             errortext.innerText = 'Текущая позиция: ' + (photoId + 1) + ') ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login + ', описание: ' + photosData[photoId].opisanie;
             errortext.style.background = 'green';
+            localStorage.setItem('curph',photoId)
         }
         else {
             errortext.innerText = "Информация о данном фото отсутствует";
@@ -369,6 +474,10 @@ document.getElementById('left').addEventListener('click', function() {
 });
 document.getElementById('right').addEventListener('click', function() {
     photoupdate(r-1);
+});
+
+document.getElementById('fpos').addEventListener('click', function() {
+    photoupdate(0);
 });
 
 

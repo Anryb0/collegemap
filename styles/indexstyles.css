@@ -42,13 +42,15 @@ header, footer, nav {
 #send {
     font-weight: bold;
 }
-.elements {
+#elements {
     display: grid;
     width: 90%;
     grid-gap: 20px;
     border-spacing: 10px;
     margin-left: auto;
     margin-right: auto;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 .element {
     text-align: center;
@@ -104,7 +106,7 @@ a:hover {
     background-color: black;
     cursor: default;
 }
-.desc, .login, .edit, .register {
+.desc, .login, .register, .newver {
     text-align: center;
     display: none; 
     position: fixed;
@@ -114,9 +116,9 @@ a:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    animation: fadeIn 0.5s;
+    animation: fadeIn 0.3s;
 }
-.desc-elements, .login-elements, .edit-elements, .register-elements {
+.desc-elements, .login-elements, .edit-elements, .register-elements, .newver-elements {
     background-color: #f0f0f0; 
     background: rgb(46,46,46);
     background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
@@ -153,8 +155,8 @@ hr {
     cursor: pointer;
 }
 /* анимации */ 
-.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out {
-    animation: fadeOut 0.5s forwards; 
+.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out, .newver.fade-out {
+    animation: fadeOut 0.3s forwards; 
 }
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -178,4 +180,15 @@ button {
 }
 #logout, #bedit {
     display: none;
+}
+#newver {
+    text-align: left;
+}
+#pgbar {
+    display: none;
+    text-align: center;
+}
+progress {
+    background: green;
+    margin-right: 5px;
 }
