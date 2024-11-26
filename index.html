@@ -12,12 +12,30 @@
         <button id="reg">Вход</button>
         <button id='breg'>Регистрация</button>
         <span id='currentlogin'></span>
-        <!-- <button id='bedit'>+</button> --> 
+        <button id='bedit'>+</button>
         <button id='logout'>Выход</button>
         <h1>Interactive maps</h1>
         <hr>
     </header>
     <main>
+        <div class="edit" id="edit">
+            <div class="edit-elements">
+                <span class="close">&times;</span>
+                <h2 id = 'h2'>Добавить локацию</h2>
+                <p>Название: <input type="text" id="i1" class="form"></p>
+                <p>Описание: <input type="text" id="i2" class="form"></p>
+                <p>Обложка локации (картинка .jpg): <input type="file" id="i3" class="smallform"></p>
+                <p>Рекомендуемый режим просмотра: <select id="ispanoram">
+                    <option value='yes'>Панорама</option>
+                    <option value='no'>Фото</option>
+                </select></p>
+                <br>
+                <button id="send">Добавить</button>
+                <br>
+                <p><progress id='pgbar' value='0' max='100'></progress><span id='percent'></span></p>
+                <p id="sendinfo"></p>
+            </div>
+        </div>
         <p id="toptext">На этом сайте представлены карты различных локаций. Некоторые карты являются панорамными. Ниже приведен список доступных карт: </p>
         <div class="desc" id="desc">
             <div class="desc-elements">
@@ -44,8 +62,13 @@
                 <h3>0.8.3</h3>
                 <ul>
                     <li>Теперь имя файла меняется на автоматически сгенерированное, что позволит избежать проблем при совпадении имен файлов</li>
-                    <li>Сохраняется информация о последней просмотренной фотографии</li>
                     <li>Надписи на кнопках поменялись на стрелки</li>
+                </ul>
+                <h3>0.9</h3>
+                <ul>
+                    <li>Теперь пользователи могут добавлять новые локации на сайт</li>
+                    <li>Картинок за таблицей больше нет, планируется полная переработка таблицы</li>
+                    <li>Теперь на главной странице отображается автор каждой локации</li>
                 </ul>
             </div>
         </div>
@@ -77,7 +100,7 @@
     </main>
     <footer>
         <hr>
-        <p>ver. 0.8.3 release <button id='bnew'>Что нового?</button></p>
+        <p>ver. 0.9 release <button id='bnew'>Что нового?</button></p>
     </footer>
     <script src="scripts/indexscript.js"></script>
 </body>

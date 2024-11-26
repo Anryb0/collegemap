@@ -1,7 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search); // параметры url
 
 const mapId = urlParams.get('mapId'); // номер карты
-const graphurl = urlParams.get('graphurl'); // изображение схемы (за таблицей)
 
 const map = document.getElementById('map'); // схема
 const change = document.getElementById('switch'); // кнопка смена режима
@@ -45,9 +44,6 @@ else {
 
 if(localStorage.getItem('login')){
     bedit.style.display = 'inline-block';
-}
-if(localStorage.getItem('curph') && localStorage.getItem('mapid') == mapId){
-    currentphoto = parseInt(localStorage.getItem('curph'))
 }
 localStorage.setItem('mapid', mapId);
 // выводим название текущей карты и рекомендованный режим просмотра
@@ -103,6 +99,7 @@ send.addEventListener('click', function() {
         };
         xhr.onload = function() {
             if (xhr.status === 200) {
+                console.log(xhr.responseText)
                 var data = JSON.parse(xhr.responseText);
                 if (data.success) {
                     document.getElementById('percent').style.display = 'none'
@@ -392,7 +389,7 @@ fetch('server/getphotoinfo.php', {
         createtable(photosData);
         
     } else {
-        errortext.innerText = "Отсутствует корректный ответ с сервера";
+        errortext.innerText = "Пока фото этой локации нет. Вы можете загрузить фото с помощью кнопки '+' в начале страницы.";
     }
 })
 
@@ -418,9 +415,6 @@ function renderButtons(l, r, f, b) {
 
 // создание таблицы
 function createtable (data) {
-    link = "url('" + graphurl + "'"
-    map.style.backgroundImage = link;
-    map.style.backgroundSize = "cover";
     var currentRowIndex = 0; 
     while (currentRowIndex !== null) { 
     var row = data[currentRowIndex]; 

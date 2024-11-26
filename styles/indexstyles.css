@@ -106,7 +106,7 @@ a:hover {
     background-color: black;
     cursor: default;
 }
-.desc, .login, .register, .newver {
+.desc, .login, .register, .newver, .edit {
     text-align: center;
     display: none; 
     position: fixed;
@@ -118,7 +118,7 @@ a:hover {
     overflow: auto;
     animation: fadeIn 0.3s;
 }
-.desc-elements, .login-elements, .edit-elements, .register-elements, .newver-elements {
+.desc-elements, .login-elements, .edit-elements, .register-elements, .newver-elements, .edit-elements {
     background-color: #f0f0f0; 
     background: rgb(46,46,46);
     background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
@@ -155,7 +155,7 @@ hr {
     cursor: pointer;
 }
 /* анимации */ 
-.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out, .newver.fade-out {
+.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out, .newver.fade-out, .edit.fade-out {
     animation: fadeOut 0.3s forwards; 
 }
 @keyframes fadeIn {
@@ -191,4 +191,12 @@ button {
 progress {
     background: green;
     margin-right: 5px;
+}
+.plogin {
+    font-size: 12px;
+    background: green;
+    width: 60%;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 5px;
 }
