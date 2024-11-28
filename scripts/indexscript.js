@@ -1,29 +1,12 @@
 // определение переменных
-const pgbar = document.getElementById('pgbar'); // прогрессбар загрузки файла
 
-const desc = document.getElementById('desc'); // описание
 const desctext = document.querySelector('.desc-text'); // текст описания
 
-const login = document.getElementById('login'); // форма входа
 const send = document.getElementById('send'); // форма отправки данных 
-const edit = document.getElementById('edit'); // форма редактирования
-const register = document.getElementById('register'); // форма регистрации
-const newver = document.getElementById('newver'); // история версий
 
-const logintext = document.getElementById('logintext'); // поле с логином
-const password = document.getElementById('password'); // поле с паролем
-
-const loginfo = document.getElementById('loginfo'); // информация в форме логина
 const sendinfo = document.getElementById('sendinfo'); // информация в форме отправки данных
-const reginfo = document.getElementById('reginfo'); // информация в форме регистрации
 
 const elements = document.getElementById('elements'); // список превьюшек
-
-const close = document.querySelectorAll('.close'); // крестики для закрытия элементов
-
-const currentlogin = document.getElementById('currentlogin'); // элемент, где выводится логин пользователя (который уже зашел)
-
-const bedit =  document.getElementById('bedit'); // кнопка чтобы добавить локацию 
 
 // формы для отправки на сервер
 const locname = document.getElementById('i1');
@@ -39,11 +22,6 @@ let newlogins = [] // все логины авторов
 let newdiv, newimg, mapphotos, pnames, newname, newlink, details, newlink2, mapurls, newb, newlogin; // переменные, которые будут нужны для генерации контента на странице
 
 let formData = new FormData(); // данные для сервера
-
-// проверка зашел ли пользователь в систему
-if(localStorage.getItem('login')){
-    successlogin()
-}
 
 // запрос на сервер, получение массивов данных
 fetch('server/getmapinfo.php', {
@@ -135,10 +113,6 @@ body: formData
     console.log(error);
 });
 
-// отображение формы входа при нажатии на кнопку
-reg.addEventListener('click', function() {
-        login.style.display = 'block';
-});
 // отображение формы регистрации при нажатии на кнопку
 document.getElementById('breg').addEventListener('click', function() {
         register.style.display = 'block';
@@ -147,7 +121,10 @@ document.getElementById('breg').addEventListener('click', function() {
 document.getElementById('bnew').addEventListener('click', function() {
     newver.style.display = 'inline-block'; 
 });
-
+// отображение истории версий
+document.getElementById('bnew').addEventListener('click', function() {
+    newver.style.display = 'inline-block'; 
+});
 // при нажатии на кнопку выхода удаляем login из хранилища, обновляем страницу 
 document.getElementById('logout').addEventListener('click', function() {
         localStorage.removeItem('login');
@@ -219,66 +196,8 @@ function hide(element) {
     }, 300);
 }
 
-// закрытие всех окон при нажатии на любой крестик 
-close.forEach(function(item){
-   item.addEventListener('click', function() {
-        hide(desc);
-        hide(login);
-        hide(register);
-        hide(newver);
-        hide(edit)
-    }); 
-});
-
 bedit.addEventListener('click', function() {
         edit.style.display = 'inline-block';
-});
-// функция, которая срабатывает при успешном входе, изменяет параметры видимости элементов, выводит приветствие 
-function successlogin(){
-    currentlogin.innerText = 'Привет, ' +  localStorage.getItem('login');
-    bedit.style.display = 'inline-block';
-    document.getElementById('logout').style.display = 'inline-block';
-    document.getElementById('reg').style.display = 'none';
-    document.getElementById('breg').style.display = 'none';  
-}
-
-// действия при нажатии на кнопку входа
-document.getElementById('log').addEventListener('click', function() {
-    if (!logintext.value || !password.value) {
-        loginfo.innerText = 'Пожалуйста, заполните поля';
-        loginfo.style.background = 'red';
-        loginfo.style.display = 'inline-block';
-    }
-    else {
-        // отправка запроса на сервер для авторизации если поля заполнены
-        let formData1 = new FormData();
-        formData1.append('login', logintext.value);
-        formData1.append('password', password.value);
-        fetch('server/auth.php', {
-            method: 'POST',
-            body: formData1
-        })
-        .then(function(response) {
-        if (!response.ok) {
-            throw new Error('ошибка: ' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(function(data) {
-        if (data.success) {
-            localStorage.setItem('login', logintext.value);
-            hide(login);
-            successlogin();
-        } else {
-            loginfo.innerText = data.message;
-            loginfo.style.display = 'inline-block';
-        }
-    })
-        .catch(function(error) {
-            loginfo.innerText = error;
-            loginfo.style.display = 'inline-block';
-        });
-    }
 });
 
 // при нажатии на нопку регистрации

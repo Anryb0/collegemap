@@ -6,10 +6,6 @@ const map = document.getElementById('map'); // схема
 const change = document.getElementById('switch'); // кнопка смена режима
 const container = document.getElementById('container'); // контейнер для панорамы или фото
 const errortext = document.getElementById('error'); // текст ошибки
-const bedit = document.getElementById('bedit'); // кнопка добавления фото  
-const close = document.querySelectorAll('.close');
-
-const pgbar = document.getElementById('pgbar'); // прогрессбар загрузки файла
 
 // формы для отправки на сервер
 const sphotoid = document.getElementById('i2');
@@ -43,7 +39,7 @@ else {
 }
 
 if(localStorage.getItem('login')){
-    bedit.style.display = 'inline-block';
+    document.getElementById('loggedin').style.display = 'inline-block';
 }
 localStorage.setItem('mapid', mapId);
 // выводим название текущей карты и рекомендованный режим просмотра
@@ -60,13 +56,14 @@ function hide(element) {
         element.classList.remove('fade-out');
     }, 300);
 }
-close.forEach(function(item){
-   item.addEventListener('click', function() {
-        hide(edit);
-    }); 
-});
+
 document.getElementById('bedit').addEventListener('click', function() {
    edit.style.display = 'inline-block'; 
+});
+// при нажатии на кнопку выхода удаляем login из хранилища, обновляем страницу 
+document.getElementById('logout').addEventListener('click', function() {
+        localStorage.removeItem('login');
+        location.reload();
 });
 // при нажатии на кнопку отправки данных
 send.addEventListener('click', function() {

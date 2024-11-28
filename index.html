@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interacive Maps</title>
+    <title>Gallery Maps</title>
     <link rel="stylesheet" href="styles/indexstyles.css">
+    <link rel="stylesheet" href="styles/all.css">
     <link rel='icon' href='styles/logo.jpg'>
 </head>
 <body>
     <header>
-        <button id="reg">Вход</button>
-        <button id='breg'>Регистрация</button>
-        <span id='currentlogin'></span>
-        <button id='bedit'>+</button>
-        <button id='logout'>Выход</button>
-        <h1>Interactive maps</h1>
-        <hr>
+        <div class="logo"><img src="styles/logo.jpg" id='logo'>
+        <h1>Gallery Maps</h1></div>
+        <div id='logbuttons'>
+            <button id="reg">Вход</button>
+            <button id='breg'>Регистрация</button>
+        </div>
+        <div id='loggedin'>
+            <span id='currentlogin'></span>
+            <button id='bedit'>+</button>
+            <button id='logout'>Выход</button>
+        </div>
     </header>
     <main>
+        <hr id='tophr'>
         <div class="edit" id="edit">
             <div class="edit-elements">
                 <span class="close">&times;</span>
@@ -36,7 +42,7 @@
                 <p id="sendinfo"></p>
             </div>
         </div>
-        <p id="toptext">На этом сайте представлены карты различных локаций. Некоторые карты являются панорамными. Ниже приведен список доступных карт: </p>
+        <p id="toptext">Доступные для просмотра локации:</p>
         <div class="desc" id="desc">
             <div class="desc-elements">
                 <span class="close">&times;</span>
@@ -70,6 +76,12 @@
                     <li>Картинок за таблицей больше нет, планируется полная переработка таблицы</li>
                     <li>Теперь на главной странице отображается автор каждой локации</li>
                 </ul>
+                <h3>0.9.1</h3>
+                <ul>
+                    <li>Редизайн заголовка</li>
+                    <li>Теперь войти, зарегистрироваться и увидеть текущий логин можно с любой страницы сайта</li>
+                    <li>Общая оптимизация</li>
+                </ul>
             </div>
         </div>
         <div class="login" id="login">
@@ -100,8 +112,9 @@
     </main>
     <footer>
         <hr>
-        <p>ver. 0.9 release <button id='bnew'>Что нового?</button></p>
+        <p>ver. 0.9.1 release <button id='bnew'>Что нового?</button></p>
     </footer>
     <script src="scripts/indexscript.js"></script>
+    <script src="scripts/all.js"></script>
 </body>
 </html>

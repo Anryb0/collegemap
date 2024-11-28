@@ -3,18 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Maps</title>
+    <title>Gallery Maps</title>
     <link rel="stylesheet" href="styles/mapstyles.css">
+    <link rel="stylesheet" href="styles/all.css">
     <link rel='icon' href='styles/logo.jpg'>
 </head>
 <body>
     <header>
-        <div class="logo"><img src="styles/logo.jpg"></div>
-        <div class="title"><a href="index.html">Главная страница</a></div>
-        <div class="info"></div>
+        <a href='index.html' id='toback'><div class="logo"><img src="styles/logo.jpg" id='logo'>
+        <h1>Gallery Maps</h1></div></a>
+        <div id='logbuttons'>
+            <button id="reg">Вход</button>
+            <button id='breg'>Регистрация</button>
+        </div>
+        <div id='loggedin'>
+            <span id='currentlogin'></span>
+            <button id='bedit'>+</button>
+            <button id='logout'>Выход</button>
+        </div>
     </header>
     <main>
         <hr>
+        <div class="login" id="login">
+            <div class="login-elements">
+                <span class="close">&times;</span>
+                <h2>Вход</h2>
+                <p>Логин:<input type="text" id="logintext"></p>
+                <p>Пароль:<input type="password" id="password"></p>
+                <p id="loginfo"></p>
+                <br>
+                <button id="log">Войти</button>
+            </div>
+        </div>
+        <div class='register' id='register'>
+            <div class="register-elements">
+                <span class="close">&times;</span>
+                <h2>Регистрация</h2>
+                <p>Логин:<input type="text" id="logintext1"></p>
+                <p>Пароль:<input type="password" id="password1"></p>
+                <p>Повторите пароль:<input type="password" id="password2"></p>
+                <p id = "reginfo"></p>
+                <br>
+                <button id="bregister">Регистрация</button>
+            </div>
+        </div>
         <div class="edit" id="edit">
             <div class="edit-elements">
                 <span class="close">&times;</span>
@@ -39,7 +71,7 @@
         </div>
         <div id= 'info'>
             <p id='mapname'></p>
-            <p id='nowinfo'><span id='now'></span><button id='switch'></button><button id='fpos'>Начало</button><button id='bedit'>+</button></p>
+            <p id='nowinfo'><span id='now'></span><button id='switch'></button><button id='fpos'>Начало</button></p>
         </div>
         <div id='main'>
             <div id="container">
@@ -68,7 +100,7 @@
         <br>
         <div class="message"><span id="posInfo"></span></div>
         <hr>
-        <p id='ver'>ver. 0.9 beta</p>
+        <p>ver. 0.9.1 release</p>
     </footer>
     
     <aside style="display: none;">
@@ -82,5 +114,6 @@
     <script src="lib/three.min.js"></script>
     <script src="lib/panolens.min.js"></script>
     <script src="scripts/mapscript.js"></script>
+    <script src="scripts/all.js"></script>
 </body>
 </html>
