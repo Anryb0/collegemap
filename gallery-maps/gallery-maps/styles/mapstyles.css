@@ -64,7 +64,7 @@ html, body {
 }
 
 #container {
-    border: 7px solid green;
+    border: 3px solid green;
     border-radius: 10px;
     height: 600px;
     width: 100%; 
@@ -83,7 +83,7 @@ html, body {
 }
 #map {
     min-width: 250px; 
-    border: 7px solid green;
+    border: 3px solid green;
     border-radius: 10px;
     height: 600px;
 }
@@ -117,7 +117,7 @@ table {
 #inputPos {
     padding: 5px;
     height: 30px;
-    border: 5px solid green;
+    border: 3px solid green;
     border-radius: 7px;
 }
 td {
@@ -140,7 +140,7 @@ td {
     background-color: #f0f0f0; 
     background: rgb(46,46,46);
     background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
-    border: 7px solid green;
+    border: 3px solid green;
     width: 60%;
     height: auto;
     padding-bottom: 0;
@@ -220,7 +220,7 @@ button {
 #controls, #photoinfo {
     width: 300px;
     height: 100px;
-    border: 5px solid green;
+    border: 3px solid green;
     border-radius: 5px;
 }
 #controls {
@@ -271,19 +271,20 @@ button {
     height: 280px;
     overflow: auto;
     background: none;
+    border: 3px solid green;
 }
 .element img {
     width: 100px;
     height: 60px;
 }
 #elements {
-    border: 5px solid green;
+    border: 3px solid green;
     border-radius: 5px;
-    height: 320px;
+    height: 330px;
     width: auto;
     overflow-y: auto;
     overflow-x: hidden;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 .element p {
     margin: 5px;

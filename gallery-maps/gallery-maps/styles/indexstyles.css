@@ -36,3 +36,6 @@
 .element:hover {
     background-color: #004a15;
 }
+.details {
+    margin-top: 5px;
+}

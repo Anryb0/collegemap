@@ -3,92 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery Maps</title>
-    <link rel="stylesheet" href="../all.css?4">
-    <link rel="stylesheet" href="styles/indexstyles.css?6">
-    <link rel='icon' href='icon.png'>
+    <title>Anryb0 Corp.</title>
+    <link rel="stylesheet" href="../all.css?2">
+    <link rel='icon' href='logo.jpg'>
 </head>
 <body>
     <header>
-        <a href='../index.html' id='toback'><div class="logo"><img src="icon.png" id='logo'>
-        <h1>Gallery Maps</h1></div></a>
+        <div class="logo"><img src="logo.jpg" id='logo'>
+        <h1>Anryb0 Corp.</h1></div>
         <div id='logbuttons'>
             <button id="reg">Вход</button>
             <button id='breg'>Регистрация</button>
         </div>
         <div id='loggedin'>
             <span id='currentlogin'></span>
-            <button id='bedit'>+</button>
             <button id='logout'>Выход</button>
         </div>
     </header>
     <main>
         <hr id='tophr'>
-        <div class="edit" id="edit">
-            <div class="edit-elements">
-                <span class="close">&times;</span>
-                <h2 id = 'h2'>Добавить локацию</h2>
-                <p>Название: <input type="text" id="i1" class="form"></p>
-                <p>Описание: <input type="text" id="i2" class="form"></p>
-                <p>Обложка локации (картинка .jpg): <input type="file" id="i3" class="smallform"></p>
-                <p>Рекомендуемый режим просмотра: <select id="ispanoram">
-                    <option value='yes'>Панорама</option>
-                    <option value='no'>Фото</option>
-                </select></p>
-                <br>
-                <button id="send">Добавить</button>
-                <br>
-                <p><progress id='pgbar' value='0' max='100'></progress><span id='percent'></span></p>
-                <p id="sendinfo"></p>
-            </div>
-        </div>
-        <p id="toptext">Доступные для просмотра локации:</p>
-        <div class="desc" id="desc">
-            <div class="desc-elements">
-                <span class="close">&times;</span>
-                <h2>Описание локации</h2>
-                <p class="desc-text"></p>
-            </div>
-        </div>
-        <div class="newver" id="newver">
-            <div class="newver-elements">
-                <span class="close">&times;</span>
-                <h2>История версий</h2>
-                <h3>0.8.1</h3>
-                <ul>
-                    <li>Содержимое главной страницы теперь генерируется автоматически</li>
-                    <li>Добавлен раздел "История версий"</li>
-                </ul>
-                <h3>0.8.2</h3>
-                <ul>
-                    <li>В форме отправки фото появился индикатор загрузки</li>
-                    <li>На главной странице применен адаптивный дизайн в несколько колонок</li>
-                    <li>Кнопка + переместилась на страницу просмотра локации, теперь не нужно вводить номер карты</li>
-                </ul>
-                <h3>0.8.3</h3>
-                <ul>
-                    <li>Теперь имя файла меняется на автоматически сгенерированное, что позволит избежать проблем при совпадении имен файлов</li>
-                    <li>Надписи на кнопках поменялись на стрелки</li>
-                </ul>
-                <h3>0.9</h3>
-                <ul>
-                    <li>Теперь пользователи могут добавлять новые локации на сайт</li>
-                    <li>Картинок за таблицей больше нет, планируется полная переработка таблицы</li>
-                    <li>Теперь на главной странице отображается автор каждой локации</li>
-                </ul>
-                <h3>0.9.1</h3>
-                <ul>
-                    <li>Редизайн заголовка</li>
-                    <li>Теперь войти, зарегистрироваться и увидеть текущий логин можно с любой страницы сайта</li>
-                    <li>Общая оптимизация</li>
-                </ul>
-                <h3>0.9.2</h3>
-                <ul>
-                    <li>Добавлена главная страница сайта</li>
-                    <li>Изменения дизайна на странице просмотра карт</li>
-                </ul>
-            </div>
-        </div>
+        <p id="toptext">Доступные сервисы:</p>
         <div class="login" id="login">
             <div class="login-elements">
                 <span class="close">&times;</span>
@@ -98,6 +32,13 @@
                 <p id="loginfo"></p>
                 <br>
                 <button id="log">Войти</button>
+            </div>
+        </div>
+        <div class="desc" id="desc">
+            <div class="desc-elements">
+                    <span class="close">&times;</span>
+                    <h2>Описание сервиса</h2>
+                    <p class="desc-text"></p>
             </div>
         </div>
         <div class='register' id='register'>
@@ -113,13 +54,18 @@
             </div>
         </div>
         <div id ="elements">
+            <a class="element" href='gallery-maps/index.html'>
+                <img class="sphoto" src ='bigicon.jpg'>
+                <p class="sname">Gallery Maps</p>
+                <button class="details">Подробнее</button>
+            </a>
         </div>
     </main>
     <footer>
         <hr>
-        <p>Anryb0 Corp. 2024.<a href='about.html'>Информация</a></p>
+        <p>Anryb0 Corp. 2024</p>
     </footer>
-    <script src="scripts/indexscript.js?4"></script>
-    <script src="../all.js?4"></script>
+    <script src="all.js?1"></script>
+    <script src="script.js?1"></script>
 </body>
 </html>

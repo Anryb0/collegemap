@@ -33,8 +33,23 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
         exit;
     }
     if (move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
+        $compressedFileName = '_compressed' . $fileName;
+        $compressedFilePath = __DIR__ . '/../mapimages/' . $compressedFileName;
+        $sourceImage = imagecreatefromjpeg($filePath); 
+        $width = imagesx($sourceImage);
+        $height = imagesy($sourceImage);
+        $newWidth = 240;
+        $newHeight = (int)($height * ($newWidth / $width));
+        $compressedImage = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresampled($compressedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        imagejpeg($compressedImage, $compressedFilePath, 75); 
+        imagedestroy($sourceImage);
+        imagedestroy($compressedImage);
+         if (file_exists($filePath)) {
+            unlink($filePath);
+        }
         $stmt = $conn->prepare("insert into maps (name,description, photo_url, ispanoram, user_id) values (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssii", $name, $opisanie, $fileName, $isp, $user_id);
+        $stmt->bind_param("sssii", $name, $opisanie, $compressedFileName, $isp, $user_id);
 
         if ($stmt->execute()) {
             echo json_encode(['success' => true, 'message' => 'Успешно']);

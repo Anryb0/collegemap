@@ -104,6 +104,7 @@ send.addEventListener('click', function() {
                     formData.append('b', sb);
                     formData.append('l', sl);
                     formData.append('r', sr);
+                    formData.append('f', sf);
                     formData.append('mapid', mapId);
                     formData.append('num', num2);
 
