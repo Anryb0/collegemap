@@ -3,21 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Maps</title>
+    <title>Gallery Maps</title>
     <link rel="stylesheet" href="styles/mapstyles.css">
+    <link rel="stylesheet" href="styles/all.css">
     <link rel='icon' href='styles/logo.jpg'>
 </head>
 <body>
     <header>
-        <div class="logo"><img src="styles/logo.jpg"></div>
-        <div class="title"><a href="index.html">Главная страница</a></div>
-        <div class="info"></div>
+        <a href='index.html' id='toback'><div class="logo"><img src="styles/logo.jpg" id='logo'>
+        <h1>Gallery Maps</h1></div></a>
+        <div id='logbuttons'>
+            <button id="reg">Вход</button>
+            <button id='breg'>Регистрация</button>
+        </div>
+        <div id='loggedin'>
+            <span id='currentlogin'></span>
+            <button id='bedit'>+</button>
+            <button id='logout'>Выход</button>
+        </div>
     </header>
     <main>
         <hr>
+        <div class="login" id="login">
+            <div class="login-elements">
+                <span class="close">&times;</span>
+                <h2>Вход</h2>
+                <p>Логин:<input type="text" id="logintext"></p>
+                <p>Пароль:<input type="password" id="password"></p>
+                <p id="loginfo"></p>
+                <br>
+                <button id="log">Войти</button>
+            </div>
+        </div>
+        <div class='register' id='register'>
+            <div class="register-elements">
+                <span class="close">&times;</span>
+                <h2>Регистрация</h2>
+                <p>Логин:<input type="text" id="logintext1"></p>
+                <p>Пароль:<input type="password" id="password1"></p>
+                <p>Повторите пароль:<input type="password" id="password2"></p>
+                <p id = "reginfo"></p>
+                <br>
+                <button id="bregister">Регистрация</button>
+            </div>
+        </div>
+        <div class="edit" id="edit">
+            <div class="edit-elements">
+                <span class="close">&times;</span>
+                <h2>Добавить запись</h2>
+                <p class = 'finfo'>Обязательные поля отмечены *.</p>
+                <p class = 'finfo'>Номера фото, куда можно перейти из этой фотографии по разным направлениям. (Если фото отсутствует, оставьте поле пустым):</p>
+                <p>Спереди<input type="number" id="i3" class="smallform"></p>
+                <p>Сзади<input type="number" id="i4" class="smallform"></p>
+                <p>Слева<input type="number" id="i5" class="smallform"></p>
+                <p>Справа<input type="number" id="i6" class="smallform"></p>
+                <p class = 'finfo'>Ниже необходимо загрузить 1 файл .jpg</p>
+                <p>Файл:*<input type="file" id="i7" class="smallform"></p>
+                <p class = 'finfo'>Если карта панорамная, необходимо загрузить сферическую панораму 360 градусов, а не обычное фото.</p>
+                <p>Название:*<input type="text" id="i8" class="smallform"></p>
+                <p>Описание:*<input type="text" id="i9" class="smallform"></p>
+                <br>
+                <button id="send">Отправить</button>
+                <br>
+                <p><progress id='pgbar' value='0' max='100'></progress><span id='percent'></span></p>
+                <p id="sendinfo"></p>
+            </div>
+        </div>
         <div id= 'info'>
             <p id='mapname'></p>
-            <p id='nowinfo'><span id='now'></span><button id='switch'></button></p>
+            <p id='nowinfo'><span id='now'></span><button id='switch'></button><button id='fpos'>Начало</button></p>
         </div>
         <div id='main'>
             <div id="container">
@@ -32,11 +86,11 @@
     </main>
     <footer>
         <div class="controls">
-            <button id="forward">Вперед</button>
+            <button id="forward">▲</button>
             <br>
-            <button id="left">Влево</button>
-            <button id="back">Назад</button>
-            <button id="right">Вправо</button>
+            <button id="left">◄</button>
+            <button id="back">▼</button>
+            <button id="right">►</button>
             <br>
             <form id="form"> 
                 <input type="text" id="inputPos" placeholder="Введите номер позиции" name="photoId"/>
@@ -46,7 +100,7 @@
         <br>
         <div class="message"><span id="posInfo"></span></div>
         <hr>
-        <p id='ver'>ver. 0.8 release</p>
+        <p>ver. 0.9.1 release</p>
     </footer>
     
     <aside style="display: none;">
@@ -60,5 +114,6 @@
     <script src="lib/three.min.js"></script>
     <script src="lib/panolens.min.js"></script>
     <script src="scripts/mapscript.js"></script>
+    <script src="scripts/all.js"></script>
 </body>
 </html>

@@ -3,27 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interacive Maps</title>
+    <title>Gallery Maps</title>
     <link rel="stylesheet" href="styles/indexstyles.css">
+    <link rel="stylesheet" href="styles/all.css">
     <link rel='icon' href='styles/logo.jpg'>
 </head>
 <body>
     <header>
-        <button id="reg">Вход</button>
-        <button id='breg'>Регистрация</button>
-        <span id='currentlogin'></span>
-        <button id='bedit'>+</button>
-        <button id='logout'>Выход</button>
-        <h1>Interactive maps</h1>
-        <hr>
+        <div class="logo"><img src="styles/logo.jpg" id='logo'>
+        <h1>Gallery Maps</h1></div>
+        <div id='logbuttons'>
+            <button id="reg">Вход</button>
+            <button id='breg'>Регистрация</button>
+        </div>
+        <div id='loggedin'>
+            <span id='currentlogin'></span>
+            <button id='bedit'>+</button>
+            <button id='logout'>Выход</button>
+        </div>
     </header>
     <main>
-        <p id="toptext">На этом сайте представлены карты различных локаций. Некоторые карты являются панорамными. Ниже приведен список доступных карт: </p>
+        <hr id='tophr'>
+        <div class="edit" id="edit">
+            <div class="edit-elements">
+                <span class="close">&times;</span>
+                <h2 id = 'h2'>Добавить локацию</h2>
+                <p>Название: <input type="text" id="i1" class="form"></p>
+                <p>Описание: <input type="text" id="i2" class="form"></p>
+                <p>Обложка локации (картинка .jpg): <input type="file" id="i3" class="smallform"></p>
+                <p>Рекомендуемый режим просмотра: <select id="ispanoram">
+                    <option value='yes'>Панорама</option>
+                    <option value='no'>Фото</option>
+                </select></p>
+                <br>
+                <button id="send">Добавить</button>
+                <br>
+                <p><progress id='pgbar' value='0' max='100'></progress><span id='percent'></span></p>
+                <p id="sendinfo"></p>
+            </div>
+        </div>
+        <p id="toptext">Доступные для просмотра локации:</p>
         <div class="desc" id="desc">
             <div class="desc-elements">
                 <span class="close">&times;</span>
                 <h2>Описание карты</h2>
                 <p class="desc-text"></p>
+            </div>
+        </div>
+        <div class="newver" id="newver">
+            <div class="newver-elements">
+                <span class="close">&times;</span>
+                <h2>История версий</h2>
+                <h3>0.8.1</h3>
+                <ul>
+                    <li>Содержимое главной страницы теперь генерируется автоматически</li>
+                    <li>Добавлен раздел "История версий"</li>
+                </ul>
+                <h3>0.8.2</h3>
+                <ul>
+                    <li>В форме отправки фото появился индикатор загрузки</li>
+                    <li>На главной странице применен адаптивный дизайн в несколько колонок</li>
+                    <li>Кнопка + переместилась на страницу просмотра локации, теперь не нужно вводить номер карты</li>
+                </ul>
+                <h3>0.8.3</h3>
+                <ul>
+                    <li>Теперь имя файла меняется на автоматически сгенерированное, что позволит избежать проблем при совпадении имен файлов</li>
+                    <li>Надписи на кнопках поменялись на стрелки</li>
+                </ul>
+                <h3>0.9</h3>
+                <ul>
+                    <li>Теперь пользователи могут добавлять новые локации на сайт</li>
+                    <li>Картинок за таблицей больше нет, планируется полная переработка таблицы</li>
+                    <li>Теперь на главной странице отображается автор каждой локации</li>
+                </ul>
+                <h3>0.9.1</h3>
+                <ul>
+                    <li>Редизайн заголовка</li>
+                    <li>Теперь войти, зарегистрироваться и увидеть текущий логин можно с любой страницы сайта</li>
+                    <li>Общая оптимизация</li>
+                </ul>
             </div>
         </div>
         <div class="login" id="login">
@@ -49,47 +107,14 @@
                 <button id="bregister">Регистрация</button>
             </div>
         </div>
-        <div class="edit" id="edit">
-            <div class="edit-elements">
-                <span class="close">&times;</span>
-                <h2>Добавить запись</h2>
-                <p class = 'finfo'>Обязательные поля отмечены *.</p>
-                <p>Номер карты:*<input type="number" id="i1" class="bigform"></p>
-                <p class = 'finfo'>Номера фото, куда можно перейти из этой фотографии по разным направлениям. (Если фото отсутствует, оставьте поле пустым):</p>
-                <p>Спереди<input type="number" id="i3" class="smallform"></p>
-                <p>Сзади<input type="number" id="i4" class="smallform"></p>
-                <p>Слева<input type="number" id="i5" class="smallform"></p>
-                <p>Справа<input type="number" id="i6" class="smallform"></p>
-                <p class = 'finfo'>Ниже необходимо загрузить 1 файл .jpg</p>
-                <p>Файл:*<input type="file" id="i7" class="smallform"></p>
-                <p class = 'finfo'>Если карта панорамная, необходимо загрузить сферическую панораму 360 градусов, а не обычное фото.</p>
-                <p>Название:*<input type="text" id="i8" class="smallform"></p>
-                <p>Описание:*<input type="text" id="i9" class="smallform"></p>
-                <br>
-                <button id="send">Отправить</button>
-                <br>
-                <p id="sendinfo"></p>
-            </div>
-        </div>
-        <div class="elements">
-            <div class="element">
-                <img class="mapphoto">
-                <p class="pname"></p>
-                <a class="details">Подробнее</a>
-                <a href="map.html?mapId=1" class = 'mapurl'>Перейти</a>
-            </div>
-            <div class="element">
-                <img class="mapphoto">
-                <p class="pname"></p>
-                <a class="details">Подробнее</a>
-                <a href="map.html?mapId=2" class = 'mapurl'>Перейти</a>
-            </div>
+        <div id ="elements">
         </div>
     </main>
     <footer>
         <hr>
-        <p>ver. 0.8 release</p>
+        <p>ver. 0.9.1 release <button id='bnew'>Что нового?</button></p>
     </footer>
     <script src="scripts/indexscript.js"></script>
+    <script src="scripts/all.js"></script>
 </body>
 </html>
