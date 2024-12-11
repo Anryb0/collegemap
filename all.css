@@ -95,6 +95,7 @@ a {
 }
 a:hover {
   background-color: black; 
+  cursor: pointer;
 }
 button {
     padding: 5px;
@@ -110,6 +111,7 @@ button {
 }
 button:hover {
     background-color: black;
+    cursor: pointer;
 }
 .desc, .login, .register, .newver, .edit {
     text-align: center;
@@ -178,4 +180,51 @@ hr {
 progress {
     background: green;
     margin-right: 5px;
+}
+#toptext {
+    text-align: center;
+}
+#elements {
+    display: grid;
+    width: 90%;
+    grid-gap: 20px;
+    border-spacing: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    
+}
+.element {
+    text-align: center;
+    border: 7px solid green;
+    border-radius: 5px;
+    padding: 10px;
+    transition: transform 0.3s;
+}   
+.element:hover {
+    transform: scale(1.05);
+}
+.element img {
+    width: 320px;
+    height: 240px;
+    border-radius: 5px;
+}
+.element p {
+    color: white;
+}
+#toback {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: block;
+    background: none;
+    width: auto;
+    height: auto;
+}
+button {
+    text-shadow: 2px 2px 5px black;
+}
+#mapname {
+    width: 600px; 
 }

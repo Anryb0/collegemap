@@ -6,6 +6,8 @@ const desc = document.getElementById('desc'); // описание
 const login = document.getElementById('login'); // форма входа
 const register = document.getElementById('register'); // форма регистрации
 
+const desctext2 = document.querySelector('.desc-text'); // текст описания
+
 const closex = document.querySelectorAll('.close'); // крестики для закрытия элементов
 
 const currentlogin = document.getElementById('currentlogin'); // элемент, где выводится логин пользователя (который уже зашел)
@@ -34,6 +36,9 @@ function successlogin(){
         currentlogin.innerText = 'Привет, ' +  localStorage.getItem('login');
         logged.style.display = 'inline-block';
         notlogged.style.display = 'none';
+        if(document.getElementById('bedit')){
+            document.getElementById('bedit').style.display = 'inline-block'
+        }
     }
 }
 
@@ -49,7 +54,7 @@ document.getElementById('log').addEventListener('click', function() {
         let formData1 = new FormData();
         formData1.append('login', logintext.value);
         formData1.append('password', password.value);
-        fetch('server/auth.php', {
+        fetch('http://anryb0.online/server/auth.php', {
             method: 'POST',
             body: formData1
         })
@@ -102,6 +107,14 @@ reg.addEventListener('click', function() {
         login.style.display = 'block';
 });
 
+// обработчик плавного закрытия окон
+function hide(element) {
+    element.classList.add('fade-out'); 
+    setTimeout(function() {
+        element.style.display = 'none'; 
+        element.classList.remove('fade-out');
+    }, 300);
+}
 
 // при нажатии на нопку регистрации
 document.getElementById('bregister').addEventListener('click', function() {
@@ -115,7 +128,7 @@ document.getElementById('bregister').addEventListener('click', function() {
         let formData3 = new FormData();
         formData3.append('login', document.getElementById('logintext1').value);
         formData3.append('password', document.getElementById('password1').value);
-        fetch('server/register.php', {
+        fetch('http://anryb0.online/server/register.php', {
             method: 'POST',
             body: formData3
         })

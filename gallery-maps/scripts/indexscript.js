@@ -1,5 +1,4 @@
 // определение переменных
-
 const desctext = document.querySelector('.desc-text'); // текст описания
 
 const send = document.getElementById('send'); // форма отправки данных 
@@ -19,7 +18,7 @@ let urls = [] ; // массив ссылок на фото карт
 let ispanorams = []; // массив переменных, которые определяют является ли карта панорманой 
 let mapids = []; // массив идентификаторов фото 
 let newlogins = [] // все логины авторов
-let newdiv, newimg, mapphotos, pnames, newname, newlink, details, newlink2, mapurls, newb, newlogin; // переменные, которые будут нужны для генерации контента на странице
+let newdiv, newimg, mapphotos, pnames, newname, newlink, details, newlink2, mapurls, newb, newlogin, par; // переменные, которые будут нужны для генерации контента на странице
 
 let formData = new FormData(); // данные для сервера
 
@@ -56,7 +55,7 @@ body: formData
         });
         // генерация превьюшек карт
         names.forEach(function(item,index) {
-           newdiv = document.createElement('DIV');
+           newdiv = document.createElement('A');
            newdiv.classList.add('element');
            newimg = document.createElement('IMG');
            newimg.classList.add('mapphoto');
@@ -65,26 +64,25 @@ body: formData
            newlogin = document.createElement('P');
            newlogin.classList.add('plogin');
            newlink = document.createElement('A');
+           par = document.createElement('P');
            newlink.innerText = 'Подробнее';
            newlink.classList.add('details');
-           newlink2 = document.createElement('A');
-           newlink2.innerText = 'Перейти';
-           newlink2.classList.add('mapurl');
+           par.appendChild(newlink)
            newdiv.appendChild(newimg);
            newdiv.appendChild(newname);
-           newdiv.appendChild(newlink);
-           newdiv.appendChild(newlink2);
+           newdiv.appendChild(par);
            newdiv.appendChild(newlogin);
            elements.appendChild(newdiv);
            mapphotos = document.querySelectorAll('.mapphoto');
            pnames = document.querySelectorAll('.pname');
            details = document.querySelectorAll('.details');
-           mapurls =  document.querySelectorAll('.mapurl');
+           mapurls =  document.querySelectorAll('.element');
            plogins =  document.querySelectorAll('.plogin');
         })
         // отображение описания при нажатии на кнопку "подробнее"
         details.forEach(function(button, index) {
             button.addEventListener('click', function() {
+            event.preventDefault(); 
             desctext.textContent = descriptions[index];
             desc.style.display = 'block';
             });
@@ -116,19 +114,6 @@ body: formData
 // отображение формы регистрации при нажатии на кнопку
 document.getElementById('breg').addEventListener('click', function() {
         register.style.display = 'block';
-});
-// отображение истории версий
-document.getElementById('bnew').addEventListener('click', function() {
-    newver.style.display = 'inline-block'; 
-});
-// отображение истории версий
-document.getElementById('bnew').addEventListener('click', function() {
-    newver.style.display = 'inline-block'; 
-});
-// при нажатии на кнопку выхода удаляем login из хранилища, обновляем страницу 
-document.getElementById('logout').addEventListener('click', function() {
-        localStorage.removeItem('login');
-        location.reload();
 });
 
 send.addEventListener('click', function() {
@@ -187,64 +172,8 @@ send.addEventListener('click', function() {
     }
 });
 
-// обработчик плавного закрытия окон
-function hide(element) {
-    element.classList.add('fade-out'); 
-    setTimeout(function() {
-        element.style.display = 'none'; 
-        element.classList.remove('fade-out');
-    }, 300);
-}
-
 bedit.addEventListener('click', function() {
         edit.style.display = 'inline-block';
-});
-
-// при нажатии на нопку регистрации
-document.getElementById('bregister').addEventListener('click', function() {
-    // проверка совпадения паролей + того, что все поля заполнены
-    if (!document.getElementById('logintext1').value || !document.getElementById('password1').value || document.getElementById('password1').value !== document.getElementById('password2').value) {
-        reginfo.innerText = 'Пожалуйста, заполните поля';
-        reginfo.style.background = 'red';
-        reginfo.style.display = 'inline-block';
-    }
-    else {
-        let formData3 = new FormData();
-        formData3.append('login', document.getElementById('logintext1').value);
-        formData3.append('password', document.getElementById('password1').value);
-        fetch('server/register.php', {
-            method: 'POST',
-            body: formData3
-        })
-        .then(function(response) {
-        if (!response.ok) {
-            throw new Error('ошибка: ' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(function(data) {
-        if (data.success) {
-            reginfo.innerText = 'Пользователь добавлен';
-            reginfo.style.background = 'green';
-            reginfo.style.display = 'inline-block';
-            // автовход при регистрации
-            setTimeout(function() {
-                hide(register);
-                localStorage.setItem('login', document.getElementById('logintext1').value)
-                successlogin()
-            }, 1000);
-        } else {
-            reginfo.innerText = data.message;
-            reginfo.style.background = 'red';
-            reginfo.style.display = 'inline-block';
-        }
-        })
-        .catch(function(error) {
-            reginfo.innerText = error;
-            reginfo.style.background = 'red';
-            reginfo.style.display = 'inline-block';
-        });
-    }
 });
 
 

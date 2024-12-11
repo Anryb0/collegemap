@@ -1,0 +1,38 @@
+#reg {
+    width: auto;
+    font-weight: bold;
+}
+#send {
+    font-weight: bold;
+}
+
+#log {
+    font-weight: bold;
+    background-color: green;
+    color: white;
+}
+#log:hover {
+    background-color: black;
+}
+#newver {
+    text-align: left;
+}
+
+.plogin {
+    font-size: 12px;
+    width: 60%;
+    border-radius: 5px;
+    display: inline-block;
+    padding-top: 5px;
+    margin: 0;
+}
+.element {
+    text-align: center;
+    border: 2px solid green;
+    background: none;
+    width: auto;
+    height: auto;
+}
+.element:hover {
+    background-color: #004a15;
+}

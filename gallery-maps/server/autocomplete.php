@@ -1,5 +1,5 @@
 <?php
-include 'connect.php';
+include '../../server/connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header('Content-Type: application/json');
@@ -10,7 +10,7 @@ $l = $_POST['l'];
 $num = $_POST['num'];
 $mapid = $_POST['mapid'];
 
-if($b !== null){
+if($b !== ''){
     $stmt = $conn->prepare("update photos set f = ? where num = ? and map_id = ?");
     $stmt->bind_param("iii", $num, $b, $mapid);
     if ($stmt->execute()) {
@@ -21,7 +21,7 @@ if($b !== null){
     }
     $stmt->close();
 }
-if($r !== null){
+if($r !== ''){
     $stmt = $conn->prepare("update photos set l = ? where num = ? and map_id = ?");
     $stmt->bind_param("iii", $num, $r, $mapid);
     if ($stmt->execute()) {
@@ -32,7 +32,7 @@ if($r !== null){
     }
     $stmt->close();
 }
-if($l !== null){
+if($l !== ''){
     $stmt = $conn->prepare("update photos set r = ? where num = ? and map_id = ?");
     $stmt->bind_param("iii", $num, $l, $mapid);
     if ($stmt->execute()) {

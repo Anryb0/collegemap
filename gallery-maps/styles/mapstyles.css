@@ -1,9 +1,10 @@
 #ver {
     padding-top: 15px;
 }
-#mapname, #nowinfo {
+#nowinfo {
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 0;
     border-radius: 5px;
     font-size: 14px;
     width: auto;
@@ -12,10 +13,18 @@
     margin-right: auto;
     display: inline-block;
 }
+#mapname {
+    background: none;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: auto;
+    font-size: 20px;
+    margin-top: 15px;
+}
 #info {
     text-align: center;
 }
-#now, #mapname {
+#now {
     background: green;
 }
 #now {
@@ -48,10 +57,10 @@ html, body {
     display: grid;
     grid-template-columns: 1fr 20%; 
     gap: 25px; 
-    margin-bottom: 50px; 
+    margin-bottom: 20px; 
     margin-left: 5%;
     margin-right: 5%;
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 #container {
@@ -131,10 +140,12 @@ td {
     background-color: #f0f0f0; 
     background: rgb(46,46,46);
     background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
-    margin: 15% auto; 
-    padding: 20px;
     border: 7px solid green;
     width: 60%;
+    height: auto;
+    padding-bottom: 0;
+    overflow: auto;
+    margin: auto;
     border-radius: 5px;
 }
 .edit-elements p {
@@ -188,12 +199,92 @@ button {
 #back {
     display:inline-block;
 }
-#toback {
+#form {
+    text-align: center;
+}
+#form input {
     margin: 0;
     padding: 0;
-    border: none;
-    display: block;
+    width: 100px;
+    height: 20px;
+}
+#fpos {
     background: none;
+    border: none;
+    cursor: pointer;
+}
+#end {
+    display: flex;
+    justify-content: center;
+}
+#controls, #photoinfo {
+    width: 300px;
+    height: 100px;
+    border: 5px solid green;
+    border-radius: 5px;
+}
+#controls {
+    margin-right: 20px;
+}
+#photoinfo p {
+    margin: 10px;
+}
+#photoinfo {
+    overflow: auto;
+}
+.dir {
+    border: none;
+    background: none;
+    font-size: 28px;
+}
+
+.dir:hover {
+    background: none;
+}
+#fpos {
+    flex: 3;
+}
+#bedit {
+    display: none;
+}
+#nowinfo * {
     width: auto;
-    height: auto;
+}
+/*.element {
+    width: 160px;
+    height: 300px;
+    background: none;
+}
+.element img {
+    width: 100px;
+    height: 60px;
+}
+#elements {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.element p {
+    margin: 5px;
+}*/
+#edit {overflow: hidden;}
+.element {
+    width: 160px;
+    height: 280px;
+    overflow: auto;
+    background: none;
+}
+.element img {
+    width: 100px;
+    height: 60px;
+}
+#elements {
+    border: 5px solid green;
+    border-radius: 5px;
+    height: 320px;
+    width: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.element p {
+    margin: 5px;
 }
