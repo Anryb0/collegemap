@@ -32,7 +32,7 @@
                 <h2>Вход</h2>
                 <p>Логин:<input type="text" id="logintext"></p>
                 <p>Пароль:<input type="password" id="password"></p>
-                <p id="errortext"></p>
+                <p id="loginfo"></p>
                 <br>
                 <button id="log">Войти</button>
             </div>
@@ -44,7 +44,7 @@
                 <p>Логин:<input type="text" id="logintext1"></p>
                 <p>Пароль:<input type="password" id="password1"></p>
                 <p>Повторите пароль:<input type="password" id="password2"></p>
-                <p id="errortext3"></p>
+                <p id = "reginfo"></p>
                 <br>
                 <button id="bregister">Регистрация</button>
             </div>
@@ -53,22 +53,22 @@
             <div class="edit-elements">
                 <span class="close">&times;</span>
                 <h2>Добавить запись</h2>
-                <p>Обязательные поля отмечены *.</p>
+                <p class = 'finfo'>Обязательные поля отмечены *.</p>
                 <p>Номер карты:*<input type="number" id="i1" class="bigform"></p>
-                <p>Номер фото:*<input type="number" id="i2" class="bigform"></p>
-                <p>Номера фото, куда можно перейти из этой фотографии по разным направлениям. (Если фото отсутствует, оставьте поле пустым):</p>
+                <p class = 'finfo'>Номера фото, куда можно перейти из этой фотографии по разным направлениям. (Если фото отсутствует, оставьте поле пустым):</p>
                 <p>Спереди<input type="number" id="i3" class="smallform"></p>
                 <p>Сзади<input type="number" id="i4" class="smallform"></p>
                 <p>Слева<input type="number" id="i5" class="smallform"></p>
                 <p>Справа<input type="number" id="i6" class="smallform"></p>
-                <p>Ниже необходимо загрузить 1 файл .jpg</p>
+                <p class = 'finfo'>Ниже необходимо загрузить 1 файл .jpg</p>
                 <p>Файл:*<input type="file" id="i7" class="smallform"></p>
-                <p>Если карта панорамная, необходимо загрузить сферическую панораму 360 градусов, а не обычное фото.</p>
+                <p class = 'finfo'>Если карта панорамная, необходимо загрузить сферическую панораму 360 градусов, а не обычное фото.</p>
                 <p>Название:*<input type="text" id="i8" class="smallform"></p>
+                <p>Описание:*<input type="text" id="i9" class="smallform"></p>
                 <br>
                 <button id="send">Отправить</button>
                 <br>
-                <p id="errortext2"></p>
+                <p id="sendinfo"></p>
             </div>
         </div>
         <div class="elements">
@@ -88,7 +88,7 @@
     </main>
     <footer>
         <hr>
-        <p>ver. 0.7 release</p>
+        <p>ver. 0.8 release</p>
     </footer>
     <script src="scripts/indexscript.js"></script>
 </body>

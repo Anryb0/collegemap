@@ -18,6 +18,29 @@ body::-webkit-scrollbar {
 #ver {
     padding-top: 15px;
 }
+#mapname, #nowinfo {
+    text-align: center;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    width: auto;
+    padding: 7px;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+}
+#info {
+    text-align: center;
+}
+#now, #mapname {
+    background: green;
+}
+#now {
+    margin-top: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 7px;
+}
 hr {
     border-color: green;
 }
@@ -75,7 +98,10 @@ html, body {
     display: grid;
     grid-template-columns: 1fr 20%; 
     gap: 25px; 
-    margin: 50px 5%;
+    margin-bottom: 50px; 
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 25px;
 }
 
 #container {

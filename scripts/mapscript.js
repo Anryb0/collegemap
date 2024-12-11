@@ -1,23 +1,58 @@
 const urlParams = new URLSearchParams(window.location.search); // параметры url
+
 const mapId = urlParams.get('mapId'); // номер карты
 const graphurl = urlParams.get('graphurl'); // изображение схемы (за таблицей)
-const ispanoram = urlParams.get('ispanoram'); // флаг является ли карта панорамой
+
 const map = document.getElementById('map'); // схема
+const change = document.getElementById('switch'); // кнопка смена режима
 const container = document.getElementById('container'); // контейнер для панорамы или фото
+const errortext = document.getElementById('error'); // текст ошибки
+
 let currentphoto = 0; // картинка по умолчанию
 let isInitialized = false; // флаг инициализации
 let l, r, f, b; // фотографии, которые находятся в разных направлениях относительно данной
 let scene, camera, renderer, plane; // объекты three.js
 let isUserInteracting = false; // флаг взаимодействует ли пользователь с картой
+
 let onMouseDownMouseX = 0, onMouseDownMouseY = 0; // для работы мыши
 let scaleFactor = 2.2, isMouseOverImage = 1; // масштаб, флаг мыши над картой
-let viewer, panorama; // объекты panolens
-errortext = document.getElementById('error'); // текст ошибки
 
-document.body.style.overflow = 'none';
+let viewer, panorama; // объекты panolens
+
+let ispanoram // флаг для переключения режимов отображения
+
+// выбираем значение ispanoram
+if(localStorage.getItem('viewmode') && !(localStorage.getItem('mapid') && mapId !== localStorage.getItem('mapid'))){
+    ispanoram = localStorage.getItem('viewmode');
+}
+else {
+    ispanoram = urlParams.get('ispanoram');
+}
+// добавляем для корректного переключения режимов отображения в будущем
+localStorage.setItem('mapid', mapId)
+
+// выводим название текущей карты и рекомендованный режим просмотра
+if(urlParams.get('ispanoram') == '0'){
+    document.getElementById('mapname').innerText = 'Текущая карта: ' + urlParams.get('name') + '. Рекомендованный режим просмотра: фото.';
+}
+else{
+    document.getElementById('mapname').innerText = 'Текущая карта: ' + urlParams.get('name') + '. Рекомендованный режим просмотра: панорама.';
+}
 
 // код для непанорамных карт 
 if(ispanoram == '0'){
+    
+    // для переключения между режимами просмотра
+    document.getElementById('now').innerText = 'Текущий режим просмотра: фото. Переключится: '
+    change.innerText = 'Панорама';
+    change.addEventListener('click', function(){
+        localStorage.setItem('viewmode','1')
+        location.reload()
+    })
+    // очистка div
+    while(container.firstChild){
+        container.removeChild(container.firstChild);
+    }
     // обновление фотографии  
     function photoupdate(photoId) {
         if (photosData[photoId]){
@@ -32,7 +67,7 @@ if(ispanoram == '0'){
                 f = photosData[photoId].f;
                 b = photosData[photoId].b;
                 renderButtons(l, r, f, b);
-                errortext.innerText = 'Текущая позиция: ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login;
+                errortext.innerText = 'Текущая позиция: ' + (photoId + 1) + ') ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login + ', описание: ' + photosData[photoId].opisanie;
                 errortext.style.background = 'green';
             }
         }
@@ -41,7 +76,8 @@ if(ispanoram == '0'){
             errortext.style.background = 'red';
         }
     }
-    //инициализация three.js
+    
+    // инициализация three.js
     function init() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 1, 1000);
@@ -59,6 +95,7 @@ if(ispanoram == '0'){
         window.addEventListener('resize', onWindowResize);
         animate();
     }
+    
     // изменение флага
     function onMouseEnter() {
         isMouseOverImage = true;
@@ -66,6 +103,7 @@ if(ispanoram == '0'){
     function onMouseLeave() {
         isMouseOverImage = false; 
     }
+    
     // очистка сцены
     function clearScene(scene) {
     scene.children.forEach(function(child) {
@@ -76,6 +114,7 @@ if(ispanoram == '0'){
             scene.remove(child);
         });
     }
+    
     // добавление фото
     function createImage(imageUrl, width, height) {
         clearScene(scene);
@@ -104,6 +143,7 @@ if(ispanoram == '0'){
             }
         );
     }
+    
     // при изменении размеров окна
     function onWindowResize() {
         const container = document.getElementById('container');
@@ -119,6 +159,7 @@ if(ispanoram == '0'){
             }
         }
     }
+    
     // перемещение фотографии мышью
     function onPointerStart(event) {
         isUserInteracting = true;
@@ -153,6 +194,7 @@ if(ispanoram == '0'){
     function onPointerUp() {
         isUserInteracting = false;
     }
+    
     // изменение масштаба
     function onDocumentMouseWheel(event) {
         if (isMouseOverImage) {
@@ -163,14 +205,25 @@ if(ispanoram == '0'){
             plane.scale.set(scaleFactor, scaleFactor, 1);
         }
     }
+    
     // анимация
     function animate() {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
     }
 }
+
 // код для панорамных карт
-if (ispanoram == '1') {
+if (ispanoram == '1') { 
+    
+    // для переключения между режимами просмотра
+    document.getElementById('now').innerText = 'Текущий режим просмотра: панорама. Переключится: ';
+    change.innerText = 'Фото';
+    change.addEventListener('click', function(){
+        localStorage.setItem('viewmode','0')
+        location.reload()
+    })
+    
     // обновление фото
     function photoupdate(photoId) {
         if (photosData[photoId]){
@@ -180,7 +233,7 @@ if (ispanoram == '1') {
             f = photosData[photoId].f;
             b = photosData[photoId].b;
             renderButtons(l, r, f, b);
-            errortext.innerText = 'Текущая позиция: ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login;
+            errortext.innerText = 'Текущая позиция: ' + (photoId + 1) + ') ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login + ', описание: ' + photosData[photoId].opisanie;
             errortext.style.background = 'green';
         }
         else {
@@ -188,11 +241,13 @@ if (ispanoram == '1') {
             errortext.style.background = 'red';
         }
     }
+    
     // инициализация с задержкой чтобы не было ошибок
     function init() {
         setTimeout(function() {
         }, 1000);
     }
+    
     // создание панорамы по ссылке
     function createImage(url) {
         if(panorama) {
@@ -208,8 +263,8 @@ if (ispanoram == '1') {
 	    viewer.add(panorama);
     }
 }
-
 // код, который не зависит от того, панорамная карта или нет
+
 // отправка запроса на сервер, получение данных и их запись в объект
 let formData = new FormData();
 formData.append('mapId', mapId);
@@ -232,13 +287,10 @@ fetch('server/getphotoinfo.php', {
         createtable(photosData);
         
     } else {
-        document.getElementById("error").innerText = "Отсутствует корректный ответ с сервера";
+        errortext.innerText = "Отсутствует корректный ответ с сервера";
     }
 })
 
-.catch(function(error) {
-    console.error('Ошибка:', error);
-});
 // отрисовка нужных кнопок
 function renderButtons(l, r, f, b) {
     document.getElementById('forward').style.display = 'none';
@@ -258,50 +310,49 @@ function renderButtons(l, r, f, b) {
         document.getElementById('right').style.display = 'inline';
     }
 }
+
 // создание таблицы
 function createtable (data) {
     link = "url('" + graphurl + "'"
     map.style.backgroundImage = link;
     map.style.backgroundSize = "cover";
-    for(u=0;u< data.length;u+=1) {
-        var row = data[u]
-        tr = table.insertRow();
-        var keys = ['l', 'num', 'r'];
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            var td = document.createElement('td');
-            if (row[key] == null) {
-                td.innerText = ''
-            }
-            if (row[key] !== null) {
-                if(data[parseInt(row[key])-1]){
-                    td.innerText = data[parseInt(row[key])-1].name;
-                }
-                else{
-                    td.innerText = row[key];
-                }
-                td.addEventListener('mouseover', function(row,key) {
-                    return function() {
-                        if(key == 'l')
-                        {
-                            photoupdate(row.l-1);
-                        }
-                        if(key == 'num')
-                        {
-                            photoupdate(row.num-1);
-                        }
-                        if(key == 'r')
-                        {
-                            photoupdate(row.r-1);
-                        }
-                    };
-                }(row,key));
-            }
-            tr.appendChild(td);
+    var currentRowIndex = 0; 
+    while (currentRowIndex !== null) { 
+    var row = data[currentRowIndex]; 
+    var tr = table.insertRow(); 
+    var keys = ['l', 'num', 'r'];
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var td = document.createElement('td'); 
+        if (row[key] == null) {
+            td.innerText = '';
+        } else {
+            var relatedRow = data[parseInt(row[key]) - 1];
+            if (relatedRow) {
+                td.innerText = relatedRow.name; 
+            } else {
+                td.innerText = row[key]; 
         }
+
+        td.addEventListener('mouseover', function(currentRow, key) {
+            return function() {
+            if (key == 'l') {
+                photoupdate(currentRow.l - 1);
+            } else if (key == 'num') {
+                photoupdate(currentRow.num - 1);
+            } else if (key == 'r') {
+                photoupdate(currentRow.r - 1);
+            }
+        };
+        } (row, key));
+        }
+        tr.appendChild(td); 
+    }
+        currentRowIndex = row.f - 1; 
     }
 }
-// добавление форм для обработчиков формы, кнопок
+
+// добавление обработчиков формы, кнопок
 document.getElementById('form').addEventListener('submit', function(event) {
     event.preventDefault();
     photoupdate(parseInt(document.getElementById('inputPos').value)-1);

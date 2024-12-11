@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 $mapId = $_POST['mapId'];
 
-$stmt = $conn->prepare("select p.num, p.photo_url, p.l, p.r, p.f, p.b, p.name, coalesce(u.login, 'Пользователь удален') as login
+$stmt = $conn->prepare("select p.num, p.photo_url, p.l, p.r, p.f, p.b, p.name, p.opisanie, u.login as login
     from photos p left join users u on p.user_id = u.id where p.map_id = ?");
 $stmt->bind_param("i", $mapId);
 $stmt->execute();
@@ -23,7 +23,8 @@ if ($result->num_rows > 0) {
             'f' => $photo['f'],
             'b' => $photo['b'],
             'name' => $photo['name'],
-            'login' => $photo['login']
+            'login' => $photo['login'],
+            'opisanie' => $photo['opisanie']
         ];
     }
     echo json_encode(['success' => true, 'photos' => $photos]);
