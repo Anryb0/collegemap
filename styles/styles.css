@@ -1,0 +1,152 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; 
+    background: rgb(46,46,46);
+    background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    overflow-y: scroll;
+}
+body::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+#ver {
+    padding-top: 15px;
+}
+hr {
+    border-color: green;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+header {
+    height: 80px;
+    line-height: 80px;
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    height: 80px;
+    flex:1;
+}
+.info {
+    flex: 1;
+    text-align: end;
+}
+img {
+    height: 80px;
+}
+.title { 
+    text-align: center; 
+    flex: 2;
+}
+a {
+    padding: 5px;
+    border: 3px solid green;
+    border-radius: 7px;
+    margin: 7px;
+    width: 100px;
+    height: 30px;
+    background-color: green;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+}
+a:hover {
+  background-color: black; 
+  cursor: default;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: auto; /* Позволяет высоте адаптироваться */
+    overflow: auto; /* Обеспечивает прокрутку */
+}
+
+#main {
+    display: grid;
+    grid-template-columns: 1fr 20%; 
+    gap: 25px; 
+    margin: 50px 5%;
+}
+
+#container {
+    border: 7px solid green;
+    border-radius: 10px;
+    height: 600px;
+    width: 100%; 
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.container * {
+    all: unset; 
+}
+
+#map {
+    min-width: 250px; 
+    border: 7px solid green;
+    border-radius: 10px;
+    height: 600px;
+}
+
+@media (max-width: 1300px) {
+    #main {
+        grid-template-columns: 1fr; 
+        margin: 20px;
+    }
+    #container, #map {
+        width: 100%; 
+    }
+    #map {
+        height: auto;
+    }
+}
+footer {
+    text-align: center;
+}
+table {
+    width: 100%;
+    text-align: center;
+    line-height: 70px;
+    border-collapse: collapse;
+}
+button {
+    padding: 5px;
+    border: 3px solid green;
+    border-radius: 7px;
+    margin: 7px;
+    width: 100px;
+    height: 30px;
+    background-color: green;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+button:hover {
+    background-color: black;
+}
+#back {
+    margin-bottom: 20px;
+}
+#inputPos {
+    padding: 5px;
+    height: 30px;
+    border: 5px solid green;
+    border-radius: 7px;
+}
+#error {
+    text-align: center;
+    color: white;
+}
+td {
+    border: 2px solid green;
+    border-radius: 5px;
+}

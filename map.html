@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Maps</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel='icon' href='styles/logo.jpg'>
+</head>
+<body>
+    <header>
+        <div class="logo"><img src="styles/logo.jpg"></div>
+        <div class="title"><a href="index.html">Главная страница</a></div>
+        <div class="info"></div>
+    </header>
+    <main>
+        <hr>
+        <div id='main'>
+            <div id="container">
+            </div>
+            <div id='map'>
+                <table id='table'>
+                
+                </table>
+            </div>
+        </div>
+        <p id="error"></p>
+    </main>
+    <footer>
+        <div class="controls">
+            <button id="forward">Вперед</button>
+            <br>
+            <button id="left">Влево</button>
+            <button id="back">Назад</button>
+            <button id="right">Вправо</button>
+            <br>
+            <form id="form"> 
+                <input type="text" id="inputPos" placeholder="Введите номер позиции" name="photoId"/>
+                <button type="submit" value="Submit">Перейти</button>
+            </form> 
+        </div>
+        <br>
+        <div class="message"><span id="posInfo"></span></div>
+        <hr>
+        <p id='ver'>ver. 0.6 release</p>
+    </footer>
+    
+    <aside style="display: none;">
+        <ul>
+            <li><a href="#">Страница 1</a></li>
+            <li><a href="#">Страница 2</a></li>
+            <li><a href="#">Страница 3</a></li>
+            <li><a href="#">Страница 4</a></li>
+        </ul>
+    </aside>
+    <script src="lib/three.min.js"></script>
+    <script src="lib/panolens.min.js"></script>
+    <script src="scripts/mapscript.js"></script>
+</body>
+</html>

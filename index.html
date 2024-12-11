@@ -4,42 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interacive Maps</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel='icon' href='styles/logo.jpg'>
 </head>
 <body>
     <header>
-        <button id="reg" class="reg">зарегистрироваться в Anryb0 Corp.</button>
+        <button id="reg">Добавить фото</button>
         <h1>Interactive maps</h1>
         <hr>
     </header>
     <main>
-        <p>Здесь будут панорамы различных зданий. Ниже приведен список доступных: </p>
+        <p id="toptext">На этом сайте карты различных локаций. Некоторые карты являются панорамными. Ниже приведен список доступных карт: </p>
         <div class="desc" id="desc">
             <div class="desc-elements">
                 <span class="close">&times;</span>
-                <h2>Описание панорамы</h2>
+                <h2>Описание карты</h2>
                 <p class="desc-text"></p>
+            </div>
+        </div>
+        <div class="login" id="login">
+            <div class="login-elements">
+                <span class="close2">&times;</span>
+                <h2>Вход</h2>
+                <p>Логин:<input type="text" id="logintext"></p>
+                <p>Пароль:<input type="password" id="password"></p>
+                <p id="errortext"></p>
+                <br>
+                <button id="log">Войти</button>
+            </div>
+        </div>
+        <div class="edit" id="edit">
+            <div class="edit-elements">
+                <span class="close3">&times;</span>
+                <h2>Добавить запись</h2>
+                <p>Обязательные поля отмечены *.</p>
+                <p>Номер карты:*<input type="number" id="i1" class="bigform"></p>
+                <p>Номер фото:*<input type="number" id="i2" class="bigform"></p>
+                <p>Номера фото, куда можно перейти из этой фотографии по разным направлениям. (Если фото отсутствует, оставьте поле пустым):</p>
+                <p>Спереди<input type="number" id="i3" class="smallform"></p>
+                <p>Сзади<input type="number" id="i4" class="smallform"></p>
+                <p>Слева<input type="number" id="i5" class="smallform"></p>
+                <p>Справа<input type="number" id="i6" class="smallform"></p>
+                <p>Ниже необходимо загрузить 1 файл .jpg</p>
+                <p>Файл:*<input type="file" id="i7" class="smallform"></p>
+                <p>Если карта панорамная, необходимо загрузить сферическую панораму 360 градусов, а не обычное фото.</p>
+                <br>
+                <button id="send">Отправить</button>
+                <br>
+                <p id="errortext2"></p>
             </div>
         </div>
         <div class="elements">
             <div class="element">
-                <img src="1.jpg" alt="college">
-                <h3>College map</h3>
-                <a class="details" data-description="Описание панорамы 1">подробнее</button>
-                <a href="college-map/index.html">перейти</a>
+                <img class="mapphoto">
+                <p class="pname"></p>
+                <a class="details">Подробнее</a>
+                <a href="map.html?mapId=1" class = 'mapurl'>Перейти</a>
             </div>
             <div class="element">
-                <img src="1.jpg" alt="college">
-                <h3>1</h3>
-                <a class="details" data-description="Описание панорамы 2">подробнее</button>
-                <a href="college-map/index.html">перейти</a>
+                <img class="mapphoto">
+                <p class="pname"></p>
+                <a class="details">Подробнее</a>
+                <a href="map.html?mapId=2" class = 'mapurl'>Перейти</a>
             </div>
         </div>
     </main>
     <footer>
         <hr>
-        <p>Anryb0 corp. 2024</p>
+        <p>ver. 0.6 release</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="scripts/indexscript.js"></script>
 </body>
 </html>
