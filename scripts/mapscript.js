@@ -32,14 +32,13 @@ if(ispanoram == '0'){
                 f = photosData[photoId].f;
                 b = photosData[photoId].b;
                 renderButtons(l, r, f, b);
-                document.getElementById("error").innerText = photoId + 1;
-            }
-            img.onerror = function() {
-                document.getElementById("errortext").innerText = "файл не найден на сервере";
+                errortext.innerText = 'Текущая позиция: ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login;
+                errortext.style.background = 'green';
             }
         }
         else {
-            error.innerText = "данная фотография еще не записана в базу данных";
+            errortext.innerText = "Информация о данном фото отсутствует.";
+            errortext.style.background = 'red';
         }
     }
     //инициализация three.js
@@ -101,7 +100,7 @@ if(ispanoram == '0'){
             },
             undefined,
             function (error) {
-                console.error('Ошибка при загрузке текстуры:', error);
+                errortext.innerText = 'Ошибка при загрузке текстуры: ' + error;
             }
         );
     }
@@ -181,10 +180,12 @@ if (ispanoram == '1') {
             f = photosData[photoId].f;
             b = photosData[photoId].b;
             renderButtons(l, r, f, b);
-            document.getElementById("error").innerText = photoId + 1;
+            errortext.innerText = 'Текущая позиция: ' + photosData[photoId].name + ', автор: ' + photosData[photoId].login;
+            errortext.style.background = 'green';
         }
         else {
-            error.innerText = "данная фотография еще не записана в базу данных";
+            errortext.innerText = "Информация о данном фото отсутствует";
+            errortext.style.background = 'red';
         }
     }
     // инициализация с задержкой чтобы не было ошибок
@@ -231,7 +232,7 @@ fetch('server/getphotoinfo.php', {
         createtable(photosData);
         
     } else {
-        console.error("Фотографии не найдены");
+        document.getElementById("error").innerText = "Отсутствует корректный ответ с сервера";
     }
 })
 
@@ -273,23 +274,25 @@ function createtable (data) {
                 td.innerText = ''
             }
             if (row[key] !== null) {
-                td.innerText = row[key];
+                if(data[parseInt(row[key])-1]){
+                    td.innerText = data[parseInt(row[key])-1].name;
+                }
+                else{
+                    td.innerText = row[key];
+                }
                 td.addEventListener('mouseover', function(row,key) {
                     return function() {
                         if(key == 'l')
                         {
                             photoupdate(row.l-1);
-                            console.log(row)
                         }
                         if(key == 'num')
                         {
                             photoupdate(row.num-1);
-                            console.log(row)
                         }
                         if(key == 'r')
                         {
                             photoupdate(row.r-1);
-                            console.log(row)
                         }
                     };
                 }(row,key));

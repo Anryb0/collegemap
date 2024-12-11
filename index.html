@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interacive Maps</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/indexstyles.css">
     <link rel='icon' href='styles/logo.jpg'>
 </head>
 <body>
     <header>
-        <button id="reg">Добавить фото</button>
+        <button id="reg">Вход</button>
+        <button id='breg'>Регистрация</button>
+        <span id='currentlogin'></span>
+        <button id='bedit'>+</button>
+        <button id='logout'>Выход</button>
         <h1>Interactive maps</h1>
         <hr>
     </header>
     <main>
-        <p id="toptext">На этом сайте карты различных локаций. Некоторые карты являются панорамными. Ниже приведен список доступных карт: </p>
+        <p id="toptext">На этом сайте представлены карты различных локаций. Некоторые карты являются панорамными. Ниже приведен список доступных карт: </p>
         <div class="desc" id="desc">
             <div class="desc-elements">
                 <span class="close">&times;</span>
@@ -24,7 +28,7 @@
         </div>
         <div class="login" id="login">
             <div class="login-elements">
-                <span class="close2">&times;</span>
+                <span class="close">&times;</span>
                 <h2>Вход</h2>
                 <p>Логин:<input type="text" id="logintext"></p>
                 <p>Пароль:<input type="password" id="password"></p>
@@ -33,9 +37,21 @@
                 <button id="log">Войти</button>
             </div>
         </div>
+        <div class='register' id='register'>
+            <div class="register-elements">
+                <span class="close">&times;</span>
+                <h2>Регистрация</h2>
+                <p>Логин:<input type="text" id="logintext1"></p>
+                <p>Пароль:<input type="password" id="password1"></p>
+                <p>Повторите пароль:<input type="password" id="password2"></p>
+                <p id="errortext3"></p>
+                <br>
+                <button id="bregister">Регистрация</button>
+            </div>
+        </div>
         <div class="edit" id="edit">
             <div class="edit-elements">
-                <span class="close3">&times;</span>
+                <span class="close">&times;</span>
                 <h2>Добавить запись</h2>
                 <p>Обязательные поля отмечены *.</p>
                 <p>Номер карты:*<input type="number" id="i1" class="bigform"></p>
@@ -48,6 +64,7 @@
                 <p>Ниже необходимо загрузить 1 файл .jpg</p>
                 <p>Файл:*<input type="file" id="i7" class="smallform"></p>
                 <p>Если карта панорамная, необходимо загрузить сферическую панораму 360 градусов, а не обычное фото.</p>
+                <p>Название:*<input type="text" id="i8" class="smallform"></p>
                 <br>
                 <button id="send">Отправить</button>
                 <br>
@@ -71,7 +88,7 @@
     </main>
     <footer>
         <hr>
-        <p>ver. 0.6 release</p>
+        <p>ver. 0.7 release</p>
     </footer>
     <script src="scripts/indexscript.js"></script>
 </body>

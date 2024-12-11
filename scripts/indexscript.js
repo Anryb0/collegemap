@@ -3,21 +3,19 @@ const desc = document.getElementById('desc'); // описание
 const desctext = document.querySelector('.desc-text'); // текст описания
 const login = document.getElementById('login'); // форма входа
 const details = document.querySelectorAll('.details'); // кнопки "подробнее" для открытия описания
-const reg = document.getElementById('reg'); // кнопка "вход" для открытия формы входа
-const log = document.getElementById('log'); // кнопка входа (внутри формы)
 const logintext = document.getElementById('logintext'); // форма логина
 const error = document.getElementById('errortext'); // ошибка в форме логина
 const error2 = document.getElementById('errortext2'); // ошибка в форме отправки данных
+const error3 = document.getElementById('errortext3'); // ошибка в форме регистрации
 const password = document.getElementById('password'); // форма пароля
 const pnames = document.querySelectorAll('.pname'); // названия карт
 const mapphotos = document.querySelectorAll('.mapphoto'); // фото карт
-const close = document.querySelector('.close'); // крестик для закрытия описания
-const close2 = document.querySelector('.close2'); // крестик для закрытия формы входа
-const close3 = document.querySelector('.close3'); // крестик для закрытия поля редактирования
+const close = document.querySelectorAll('.close'); // крестик для закрытия описания
 const num = details.length; // количество кнопок "подробнее" (соотв. и карт)
 const edit = document.getElementById('edit'); // поле редактирования
 const mapurls =  document.querySelectorAll('.mapurl'); // ссылки на карты
-const send = document.getElementById('send'); // кнопка отправки данных
+const register = document.getElementById('register'); // кнопка отправки данных
+const currentlogin = document.getElementById('currentlogin'); // логин пользователя (который уже зашел)
 
 // формы для отправки на сервер
 const smapid = document.getElementById('i1');
@@ -27,6 +25,7 @@ const sb = document.getElementById('i4');
 const sl = document.getElementById('i5');
 const sr = document.getElementById('i6');
 const file = document.getElementById('i7');
+const sname = document.getElementById('i8');
 
 
 let names = []; // массив названий карт
@@ -37,6 +36,16 @@ let ispanorams = []; // массив переменных, который опр
 
 let formData = new FormData(); // данные для сервера
 formData.append('maxMapId', num);
+
+// проверка зашел ли пользователь в систему
+if(localStorage.getItem('login')){
+    document.getElementById('breg').style.display = 'none';
+    document.getElementById('reg').style.display = 'none';
+    document.getElementById('bedit').style.display = 'inline-block';
+    document.getElementById('logout').style.display = 'inline-block';
+    currentlogin.innerText += 'Привет, ' +  localStorage.getItem('login');
+}
+
 
 // запрос на сервер, получение 3 массивов данных
 fetch('server/getmapinfo.php', {
@@ -94,8 +103,15 @@ details.forEach(function(button, index) {
     });
 });
 // отображение формы регистрации при нажатии на кнопку
-reg.addEventListener('click', function() {
+document.getElementById('reg').addEventListener('click', function() {
         login.style.display = 'block';
+});
+document.getElementById('logout').addEventListener('click', function() {
+        localStorage.removeItem('login');
+        location.reload();
+});
+document.getElementById('breg').addEventListener('click', function() {
+        register.style.display = 'block';
 });
 // обработчик плавного закрытия окон
 function hide(element) {
@@ -105,20 +121,16 @@ function hide(element) {
         element.classList.remove('fade-out');
     }, 500);
 }
-close.addEventListener('click', function() {
-    hide(desc);
+close.forEach(function(item){
+   item.addEventListener('click', function() {
+        hide(desc);
+        hide(login);
+        hide(register);
+        hide(edit);
+    }); 
 });
-close2.addEventListener('click', function() {
-    hide(login);
-});
-close3.addEventListener('click', function() {
-    hide(edit);
-});
-close3.addEventListener('click', function() {
-    hide(edit);
-});
-// при нажатии на нопку отправки данных
-send.addEventListener('click', function() {
+// при нажатии на кнопку отправки данных
+document.getElementById('send').addEventListener('click', function() {
     error2.innerText = ''
     // будет функция отправки на сервер
     let formData = new FormData();
@@ -128,13 +140,16 @@ send.addEventListener('click', function() {
     formData.append('sb', parseInt(sb.value));
     formData.append('sl', parseInt(sl.value));
     formData.append('sr', parseInt(sr.value));
-    if (file.files.length == 1  && smapid.value && sphotoid.value) {
+    formData.append('login', localStorage.getItem('login'));
+    formData.append('name', sname.value);
+    if (file.files.length == 1  && smapid.value && sphotoid.value && sname.value) {
             formData.append('file', file.files[0]);
                 fetch('server/uploaddata.php', {
             method: 'POST',
             body: formData
         })
         .then(function(response) {
+            console.log(response.text())
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
@@ -161,7 +176,7 @@ send.addEventListener('click', function() {
     }
 });
 // действия при нажатии на кнопку входа
-log.addEventListener('click', function() {
+document.getElementById('log').addEventListener('click', function() {
     if (!logintext.value || !password.value) {
         error.innerText = 'Поля не заполнены';
         error.style.display = 'inline-block';
@@ -183,26 +198,69 @@ log.addEventListener('click', function() {
     .then(function(data) {
         if (data.success) {
             error.style.display = 'none';
+            localStorage.setItem('login', logintext.value);
             hide(login);
-            edit.style.display = 'inline-block';
+            currentlogin.innerText = 'Привет, ' +  localStorage.getItem('login');
+            document.getElementById('bedit').style.display = 'inline-block';
+            document.getElementById('logout').style.display = 'inline-block';
+            document.getElementById('reg').style.display = 'none';
+            document.getElementById('breg').style.display = 'none';
         } else {
             error.innerText = data.message;
             error.style.display = 'inline-block';
         }
-        })
+    })
         .catch(function(error) {
-            console.error('Ошибка:', error);
+            error.innerText = 'Ошибка:' + error;
         });
     }
 });
-// закрытие форм при нажатии на свободное место
-window.addEventListener('click', function(event) {
-    if (event.target === desc) {
-        desc.style.display = 'none';
+document.getElementById('bedit').addEventListener('click', function() {
+   edit.style.display = 'inline-block'; 
+});
+document.getElementById('bregister').addEventListener('click', function() {
+    if (!document.getElementById('logintext1').value || !document.getElementById('password1').value || document.getElementById('password1').value !== document.getElementById('password2').value) {
+        error3.innerText = 'Поля не заполнены';
+        error3.style.backgorund = 'red';
     }
-    if (event.target === login) {
-        login.style.display = 'none';
+    else {
+        let formData3 = new FormData();
+        formData3.append('login', document.getElementById('logintext1').value);
+        formData3.append('password', document.getElementById('password1').value);
+        fetch('server/register.php', {
+            method: 'POST',
+            body: formData3
+        })
+        .then(function(response) {
+        if (!response.ok) {
+            throw new Error('Сеть не сработала: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.success) {
+            error3.innerText = 'пользователь добавлен';
+            error3.style.background = 'green';
+            setTimeout(function() {
+                hide(register);
+                localStorage.setItem('login', document.getElementById('logintext1').value)
+                currentlogin.innerText = 'Привет, ' +  localStorage.getItem('login');
+                document.getElementById('bedit').style.display = 'inline-block';
+                document.getElementById('logout').style.display = 'inline-block';
+                document.getElementById('reg').style.display = 'none';
+                document.getElementById('breg').style.display = 'none';
+            }, 1000);
+        } else {
+            error3.innerText = data.message;
+            error3.style.background = 'red';
+        }
+        })
+        .catch(function(error) {
+            error3.innerText = error;
+            error3.style.background = 'red';
+        });
     }
+    
 });
 
 

@@ -86,10 +86,16 @@ html, body {
     box-sizing: border-box;
     overflow: hidden;
 }
-.container * {
-    all: unset; 
+#error {
+    width: 50%;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    text-align: center;
+    color: white;
 }
-
 #map {
     min-width: 250px; 
     border: 7px solid green;
@@ -141,10 +147,6 @@ button:hover {
     height: 30px;
     border: 5px solid green;
     border-radius: 7px;
-}
-#error {
-    text-align: center;
-    color: white;
 }
 td {
     border: 2px solid green;

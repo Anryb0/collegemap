@@ -14,7 +14,7 @@ $result = $stmt->get_result();
 $data = [];
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-    if ($password === $user['password']) {
+    if (password_verify($password, $user['password'])) {
     echo json_encode(['success' => true, 'log' => true]);
 } else {
     echo json_encode(['success' => false, 'message' => 'неправильный пароль']);

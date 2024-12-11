@@ -10,6 +10,13 @@ body {
     font-size: 16px;
     font-weight: bold;
 }
+html {
+    text-shadow: 2px 2px 5px black;
+}
+#currentlogin {
+    text-align: right;
+    white-space: nowrap;
+}
 h1 {
     position: sticky;
     margin-bottom: 10px;
@@ -78,6 +85,7 @@ button {
     height: 30px;
     background-color: green;
     color: white;
+    font-weight: bold;
     font-size: 14px;
 }
 button:hover {
@@ -102,7 +110,7 @@ a:hover {
     cursor: default;
 }
 /*окно с описанием*/ 
-.desc, .login, .edit {
+.desc, .login, .edit, .register {
     text-align: center;
     display: none; 
     position: fixed;
@@ -114,7 +122,7 @@ a:hover {
     overflow: auto;
     animation: fadeIn 0.5s;
 }
-.desc-elements, .login-elements, .edit-elements {
+.desc-elements, .login-elements, .edit-elements, .register-elements {
     background-color: #f0f0f0; 
     background: rgb(46,46,46);
     background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
@@ -136,7 +144,12 @@ a:hover {
     font-size: 12px;
     padding: 5px;
 }
-.close, .close2, .close3 {
+#errortext3 {
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 5px;
+}
+.close, .close2, .close3, .close4 {
     color: white;
     float: right;
     font-size: 28px;
@@ -145,13 +158,13 @@ a:hover {
 hr {
     border-color: green;
 }
-.close:hover, .close:focus, .close2:hover, .close2:focus, .close3:hover, .close3:focus {
+.close:hover, .close:focus, .close2:hover, .close2:focus, .close3:hover, .close3:focus, .close4:hover, .close4:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
 /* анимации */ 
-.desc.fade-out, .login.fade-out, .edit.fade-out {
+.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out {
     animation: fadeOut 0.5s forwards; 
 }
 @keyframes fadeIn {
@@ -169,4 +182,10 @@ hr {
 }
 #log:hover {
     background-color: black;
+}
+button {
+    text-shadow: 2px 2px 5px black;
+}
+#logout, #bedit {
+    display: none;
 }
