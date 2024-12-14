@@ -20,7 +20,7 @@
 
 .plogin {
     font-size: 12px;
-    width: 60%;
+    width: auto;
     border-radius: 5px;
     display: inline-block;
     padding-top: 5px;
@@ -28,7 +28,6 @@
 }
 .element {
     text-align: center;
-    border: 2px solid green;
     background: none;
     width: auto;
     height: auto;
@@ -38,4 +37,8 @@
 }
 .details {
     margin-top: 5px;
+    text-align: left;
+}
+.par {
+    text-align: center;
 }

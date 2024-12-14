@@ -7,7 +7,7 @@ const change = document.getElementById('switch'); // кнопка смена р�
 const container = document.getElementById('container'); // контейнер для панорамы или фото
 const errortext = document.getElementById('error'); // текст ошибки
 
-let sf = '', sb = '', sr = '', sl = '' ;
+let sf, sb, sr, sl = '' ;
 
 // формы для отправки на сервер
 const sphotoid = document.getElementById('i2');
@@ -38,6 +38,9 @@ else {
 
 if(urlParams.get('photo')){
     currentphoto = parseInt(urlParams.get('photo') - 1)
+}
+if(localStorage.getItem('curph') && localStorage.getItem('mapid') == mapId){
+    currentphoto = parseInt(localStorage.getItem('curph'));
 }
 
 if(localStorage.getItem('login')){
@@ -104,7 +107,6 @@ send.addEventListener('click', function() {
                     formData.append('b', sb);
                     formData.append('l', sl);
                     formData.append('r', sr);
-                    formData.append('f', sf);
                     formData.append('mapid', mapId);
                     formData.append('num', num2);
 
@@ -142,18 +144,14 @@ if(ispanoram == '0'){
         localStorage.setItem('viewmode','1')
         location.reload()
     })
-    // очистка div
-    while(container.firstChild){
-        container.removeChild(container.firstChild);
-    }
     // обновление фотографии  
     function photoupdate(photoId) {
         if (photosData[photoId]){
             const img = new Image();
-            img.src = "images/" + photosData[photoId].photoUrl;
+            img.src = "https://anryb0.online/gallery-maps/images/" + photosData[photoId].photoUrl;
             img.onload = function() {
-                const width = img.width;
-                const height = img.height;
+                const width = container.width;
+                const height = container.height;
                 createImage(img.src, width, height);
                 l = photosData[photoId].l;
                 r = photosData[photoId].r;
@@ -172,142 +170,125 @@ if(ispanoram == '0'){
         }
     }
     
-    // инициализация three.js
+    // нужные переменые 
+    let newimage = document.createElement('IMG');
+    let scale = 1;
+    let isDragging = false;
+    let startX, startY, initialX, initialY;
+    
+    // инициализация чего-то 
     function init() {
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 1, 1000);
-        camera.position.z = 800;
-        renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
-        container.addEventListener('mousedown', onPointerStart);
-        container.addEventListener('mousemove', onPointerMove);
-        container.addEventListener('mouseup', onPointerUp);
-        container.addEventListener('wheel', onDocumentMouseWheel);
-        container.addEventListener('mouseenter', onMouseEnter);
-        container.addEventListener('mouseleave', onMouseLeave);
-        window.addEventListener('resize', onWindowResize);
-        animate();
+        
     }
-    
-    // изменение флага
-    function onMouseEnter() {
-        isMouseOverImage = true;
-    }
-    function onMouseLeave() {
-        isMouseOverImage = false; 
-    }
-    
-    // очистка сцены
-    function clearScene(scene) {
-    scene.children.forEach(function(child) {
-        if (child instanceof THREE.Mesh) {
-            child.geometry.dispose();
-            child.material.dispose();
-        }
-            scene.remove(child);
-        });
-    }
-    
     // добавление фото
     function createImage(imageUrl, width, height) {
-        clearScene(scene);
-        if(plane)
-        {
-            scene.remove(plane);
-            plane.geometry.dispose();
-            plane.material.dispose();
-            plane = null;
+        // очистка div
+        while(container.firstChild){
+            container.removeChild(container.firstChild);
         }
-        const geometry = new THREE.PlaneGeometry(width, height);
-        const textureLoader = new THREE.TextureLoader();
+        scale = 1
         
-        textureLoader.load(
-            imageUrl,
-            function (texture) {
-                const material = new THREE.MeshBasicMaterial({ map: texture });
-                plane = new THREE.Mesh(geometry, material);
-                plane.scale.set(scaleFactor, scaleFactor, 1); 
-                scene.add(plane);
-                onWindowResize();
-            },
-            undefined,
-            function (error) {
-                //errortext.innerText = 'Ошибка при загрузке текстуры: ' + error;
-            }
-        );
-    }
-    
-    // при изменении размеров окна
-    function onWindowResize() {
-        const container = document.getElementById('container');
-        if (container.clientWidth && container.clientHeight) {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            if (plane) {
-                if (!plane.initialized) {
-                    plane.initialized = true;
-                    plane.geometry = new THREE.PlaneGeometry(container.clientWidth, container.clientHeight);
-                }
-            }
-        }
-    }
-    
-    // перемещение фотографии мышью
-    function onPointerStart(event) {
-        isUserInteracting = true;
-        onMouseDownMouseX = event.clientX;
-        onMouseDownMouseY = event.clientY;
-    }
-    
-    function onPointerMove(event) {
-        if (isUserInteracting) {
-            const deltaX = event.clientX - onMouseDownMouseX;
-            const deltaY = event.clientY - onMouseDownMouseY;
-            const newX = plane.position.x + deltaX;
-            const newY = plane.position.y - deltaY;
-            plane.position.x += deltaX;
-            plane.position.y -= deltaY;
-            const container = document.getElementById('container');
-            const halfWidth = container.clientWidth / 2;
-            const halfHeight = container.clientHeight / 2;
-            const planeWidth = plane.geometry.parameters.width;
-            const planeHeight = plane.geometry.parameters.height
-            if (newX > halfWidth - planeWidth / 2 && newX < halfWidth + planeWidth / 2) {
-                plane.position.x = newX;
-            }
-            if (newY > halfHeight - planeHeight / 2 && newY < halfHeight + planeHeight / 2) {
-                plane.position.y = newY;
-            }
-            onMouseDownMouуseX = event.clientX;
-            onMouseDownMouseY = event.clientY;
-        }
-    }
-    
-    function onPointerUp() {
-        isUserInteracting = false;
-    }
-    
-    // изменение масштаба
-    function onDocumentMouseWheel(event) {
-        if (isMouseOverImage) {
+        // добавляем элемент 
+        container.appendChild(newimage);
+        
+        // установка стилей и атрибутов
+        newimage.src = imageUrl;
+        newimage.style.width = width ;
+        newimage.style.height = height ;
+        newimage.draggable = false;
+        container.style.position = 'relative';
+        newimage.style.position = 'absolute';
+        
+        // изменение масштаба
+        newimage.addEventListener('wheel', function(event) {
             event.preventDefault();
-            onWindowResize();
-            scaleFactor -= event.deltaY * 0.001;
-            scaleFactor = Math.max(0.5, Math.min(scaleFactor, 4));
-            plane.scale.set(scaleFactor, scaleFactor, 1);
-        }
-    }
-    
-    // анимация
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-}
+            scale += event.deltaY * -0.00025; 
+            scale = Math.min(Math.max(0.125, scale), 4);
+            newimage.style.transformOrigin = 'center center';
+            newimage.style.transform = 'scale(' + scale + ')';
+        });
+        
+        // перемещение картинки (начало, захват первых координат)
+        var handleMouseDown = function(event) {
+            isDragging = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            initialX = newimage.offsetLeft;
+            initialY = newimage.offsetTop;
+            newimage.style.cursor = 'grabbing';
+        };
+        
+        // изменение координат - середина
+        var setPosition = function(x, y) {
+            newimage.style.left = x + 'px';
+            newimage.style.top = y + 'px';
+        };
 
+        var handleMouseMove = function(event) {
+            if (isDragging) {
+                var dx = event.clientX - startX;
+                var dy = event.clientY - startY;
+                setPosition(initialX + dx, initialY + dy);
+            }
+        };
+        
+        // конец перемещения
+        var handleMouseUp = function() {
+            isDragging = false;
+            newimage.style.cursor = 'grab';
+        };
+
+        // обработчики событий
+        newimage.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('mousemove', handleMouseMove);
+
+        let initialDistance = null;
+        
+        // для тачскринов
+        newimage.addEventListener('touchstart', function(event) {
+            if (event.touches.length === 2) {
+                initialDistance = Math.hypot(
+                event.touches[0].clientX - event.touches[1].clientX,
+                event.touches[0].clientY - event.touches[1].clientY
+                );
+            } else if (event.touches.length === 1) {
+                 event.preventDefault();
+                isDragging = true;
+                startX = event.touches[0].clientX;
+                startY = event.touches[0].clientY;
+                initialX = newimage.offsetLeft;
+                initialY = newimage.offsetTop;
+                newimage.style.cursor = 'grabbing';
+            }
+        });
+        
+        newimage.addEventListener('touchmove', function(event) {
+            if (event.touches.length === 2 && initialDistance) {
+                event.preventDefault();
+                const currentDistance = Math.hypot(
+                event.touches[0].clientX - event.touches[1].clientX,
+                event.touches[0].clientY - event.touches[1].clientY
+                );
+                scale *= currentDistance / initialDistance;
+                initialDistance = currentDistance;
+                scale = Math.min(Math.max(0.125, scale), 4);
+                newimage.style.transform = 'scale(' + scale + ')';
+            } else if (isDragging) {
+                const dx = event.touches[0].clientX - startX;
+                const dy = event.touches[0].clientY - startY;
+                newimage.style.left = `${initialX + dx}px`;
+                newimage.style.top = `${initialY + dy}px`;
+            }
+        });
+        
+        newimage.addEventListener('touchend', function() {
+            isDragging = false;
+            initialDistance = null;
+            newimage.style.cursor = 'grab';
+        });
+    };
+}
 // код для панорамных карт
 if (ispanoram == '1') { 
     
@@ -516,7 +497,6 @@ function renderButtons(l, r, f, b) {
         document.getElementById('right').style.visibility = 'visible';
     }
 }
-
 // создание таблицы
 function createtable (data) {
     var currentRowIndex = 0; 
@@ -551,9 +531,14 @@ function createtable (data) {
         }
         tr.appendChild(td); 
     }
-        currentRowIndex = row.f - 1; 
+        currentRowIndex = row.f - 1;1 
     }
+    document.body.appendChild(table); // Добавляем таблицу в тело документа
 }
+    
+
+
+
 
 // добавление обработчиков кнопок
 document.getElementById('forward').addEventListener('click', function() {

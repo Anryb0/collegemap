@@ -43,7 +43,7 @@ hr {
     margin: 0;
     padding: 0;
 }
-img {
+.logo img {
     height: 80px;
 }
 html, body {
@@ -91,15 +91,18 @@ html, body {
 @media (max-width: 1300px) {
     #main {
         grid-template-columns: 1fr; 
-        margin: 20px;
+        margin: 10px;
     }
     #container, #map {
-        width: 90%; 
+        width: 97%; 
         margin-left: auto;
         margin-right: auto;
     }
     #map {
         height: auto;
+    }
+    #container {
+        height: 55vh;
     }
 }
 footer {
@@ -127,7 +130,8 @@ td {
 .edit {
     text-align: center;
     display: none; 
-    position: fixed;
+    position: relative;
+    margin-top: 20px;
     z-index: 1;
     left: 0;
     top: 0;
@@ -288,4 +292,15 @@ button {
 }
 .element p {
     margin: 5px;
+}
+#container img {
+    transition: transform 0.2s;
+    cursor: grab;
+    position: absolute;
+    width: 100%;
+    height: auto;
+}
+#container {
+    display: grid;
+    place-items: center;
 }

@@ -54,7 +54,7 @@ document.getElementById('log').addEventListener('click', function() {
         let formData1 = new FormData();
         formData1.append('login', logintext.value);
         formData1.append('password', password.value);
-        fetch('http://anryb0.online/server/auth.php', {
+        fetch('https://anryb0.online/server/auth.php', {
             method: 'POST',
             body: formData1
         })
@@ -128,7 +128,7 @@ document.getElementById('bregister').addEventListener('click', function() {
         let formData3 = new FormData();
         formData3.append('login', document.getElementById('logintext1').value);
         formData3.append('password', document.getElementById('password1').value);
-        fetch('http://anryb0.online/server/register.php', {
+        fetch('https://anryb0.online/server/register.php', {
             method: 'POST',
             body: formData3
         })

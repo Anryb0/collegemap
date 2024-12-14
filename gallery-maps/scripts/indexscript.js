@@ -61,17 +61,18 @@ body: formData
            newimg.classList.add('mapphoto');
            newname = document.createElement('P');
            newname.classList.add('pname');
-           newlogin = document.createElement('P');
+           newlogin = document.createElement('SPAN');
            newlogin.classList.add('plogin');
            newlink = document.createElement('A');
            par = document.createElement('P');
+           par.classList.add('par');
            newlink.innerText = 'Подробнее';
            newlink.classList.add('details');
+           par.appendChild(newlogin)
            par.appendChild(newlink)
            newdiv.appendChild(newimg);
            newdiv.appendChild(newname);
            newdiv.appendChild(par);
-           newdiv.appendChild(newlogin);
            elements.appendChild(newdiv);
            mapphotos = document.querySelectorAll('.mapphoto');
            pnames = document.querySelectorAll('.pname');
@@ -98,7 +99,7 @@ body: formData
             item.src = 'mapimages/' + urls[index];
         });
         plogins.forEach(function(item, index) {
-            item.innerText = 'автор: ' + newlogins[index];
+            item.innerText = 'Автор: ' + newlogins[index];
         });
         mapurls.forEach(function(item, index) {
             item.href = ('map.html?mapId=' + mapids[index] +'&ispanoram='+ispanorams[index]+'&name='+names[index] ); 

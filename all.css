@@ -83,7 +83,7 @@ input {
 }
 a {
     padding: 5px;
-    border: 3px solid green;
+    border: 2px solid green;
     border-radius: 7px;
     margin: 7px;
     width: 100px;
@@ -99,8 +99,8 @@ a:hover {
 }
 button {
     padding: 5px;
-    border: 3px solid green;
-    border-radius: 7px;
+    border: 2px solid green;
+    border-radius: 5px;
     margin: 7px;
     width: 100px;
     height: 30px;
@@ -131,7 +131,7 @@ button:hover {
     background: linear-gradient(90deg, rgba(46,46,46,1) 0%, rgba(0,0,0,1) 50%, rgba(46,46,46,1) 100%);
     margin: 15% auto; 
     padding: 20px;
-    border: 7px solid green;
+    border: 3px solid green;
     width: 60%;
     border-radius: 5px;
 }
@@ -192,18 +192,23 @@ progress {
     margin-left: auto;
     margin-right: auto;
     align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 350px));
+    justify-content: space-around;
     
 }
 .element {
     text-align: center;
-    border: 7px solid green;
+    border: none;
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     transition: transform 0.3s;
+    background: none;
+    width: auto;
+    height: auto;
 }   
 .element:hover {
     transform: scale(1.05);
+    background-color: #004a15;
 }
 .element img {
     width: 320px;
