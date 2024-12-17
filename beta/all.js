@@ -93,6 +93,9 @@ closex.forEach(function(item){
             if(register){
                 hide(register);
             }
+            if(newver){
+                hide(newver);
+            }
             if(edit){
                 hide(edit);
             }
@@ -101,15 +104,6 @@ closex.forEach(function(item){
 
 // отображение формы входа при нажатии на кнопку
 reg.addEventListener('click', function() {
-          if(desc){
-                hide(desc);
-            }
-            if(register){
-                hide(register);
-            }
-            if(edit){
-                hide(edit);
-            }
         login.style.display = 'block';
 });
 
@@ -134,7 +128,7 @@ document.getElementById('bregister').addEventListener('click', function() {
         let formData3 = new FormData();
         formData3.append('login', document.getElementById('logintext1').value);
         formData3.append('password', document.getElementById('password1').value);
-        fetch('https://anryb0.online/server/register.php', {
+        fetch('https://anryb0.online/beta/server/register.php', {
             method: 'POST',
             body: formData3
         })
@@ -175,14 +169,5 @@ document.getElementById('logout').addEventListener('click', function() {
 });
 // отображение формы регистрации при нажатии на кнопку
 document.getElementById('breg').addEventListener('click', function() {
-            if(desc){
-                hide(desc);
-            }
-            if(login){
-                hide(login);
-            }
-            if(edit){
-                hide(edit);
-            }
-            register.style.display = 'block';
+        register.style.display = 'block';
 });

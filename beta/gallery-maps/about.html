@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery Maps</title>
-    <link rel="stylesheet" href="styles/aboutstyles.css?6">
-    <link rel="stylesheet" href="../all.css?43">
+    <link rel="stylesheet" href="styles/aboutstyles.css?4">
+    <link rel="stylesheet" href="../all.css?3">
     <link rel='icon' href='icon.png'>
 </head>
 <body>
     <header>
-        <a href='index.html' id='toback'><div class="logo"><img src="icon.png" id='logo'>
+        <a href='../index.html' id='toback'><div class="logo"><img src="icon.png" id='logo'>
         <h1>Gallery Maps</h1></div></a>
         <div id='logbuttons'>
             <button id="reg">Вход</button>
@@ -18,6 +18,7 @@
         </div>
         <div id='loggedin'>
             <span id='currentlogin'></span>
+            <button id='bedit'>+</button>
             <button id='logout'>Выход</button>
         </div>
 
@@ -86,38 +87,23 @@
                 </ul>
                 <h3>0.9.3</h3>
                 <ul>
-                    <li>Добавлена отдельная страница для истории версий</li>
-                    <li>Измененное окно "Добавить фото" - стало проще выбирать примыкающие фото</li>
-                    <li>Немного изменен дизайн главной страницы</li>
-                </ul>
-                <h3>0.9.4</h3>
-                <ul>
-                    <li>Обложки карт сжимаются</li>
-                    <li>Еще изменения дизайна</li>
-                </ul>
-                <h3>0.9.5</h3>
-                <ul>
-                    <li>Теперь просмотр в режиме фото полноценно работает на тачскрине - приближение и перемещение фото.</li>
-                    <li>Сайт теперь работает по протоколу HTTPS - больше никто не сможет изменить трафик, пропали рекламные объявления от оператора.</li>
-                    <li>При изменении режима просмотра или повторном открытии локации сохраняется последнее просмотренное фото.</li>
-                    <li>Продолжение работы над дизайном.</li>
-                </ul>
-                <h3>1.0</h3>
-                <ul>
-                    <li>Новый шрифт</li>
-                    <li>Изменения интерфейса</li>
-                    <li>Добавлен раздел с публикациями пользователя, также там можно удалить фото</li>
+                        <li>beta 1: </li>
+                        <li>Перенос информации о версиях сайта на отдельную страницу</li>
+                        <li>Началась разработка личного кабинета</li>
+                        <li>beta 2: </li>
+                        <li>Рабочий раздел "Мои публикации" в личном кабинете</li>
                 </ul>
         </div>
         <div id='maininfo'>
-            <p>Текущая версия: 1.0</p>
+            <p>Текущая версия: 0.9.3 beta 2. Данная страница предназначена для тестирования, стабильность ее работы не гарантируется.</p><a href='http://anryb0.online'>0.9.2. release</a>
         </div>
     </div>
     </main>
     <footer>
         <hr>
-        <p>Anryb0 Corp. 2024.</p>
+        <p>Anryb0 Corp. 2024. For testing purposes.</p>
     </footer>
-    <script src="../all.js?4"></script>
+    <script src="scripts/indexscript.js?3"></script>
+    <script src="../all.js?3"></script>
 </body>
 </html>

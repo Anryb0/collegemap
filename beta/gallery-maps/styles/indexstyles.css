@@ -1,8 +1,13 @@
 #reg {
     width: auto;
+    font-weight: bold;
+}
+#send {
+    font-weight: bold;
 }
 
 #log {
+    font-weight: bold;
     background-color: green;
     color: white;
 }
@@ -36,4 +41,7 @@
 }
 .par {
     text-align: center;
+}
+#bedit {
+    width: auto;
 }

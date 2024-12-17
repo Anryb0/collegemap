@@ -1,0 +1,33 @@
+#userinfo {
+    border-radius: 5px;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 10px;
+    margin-bottom: 10px; 
+    margin-top: 10px;
+}
+hr {
+    margin-top: 0;
+}
+.element {
+    width: 160px;
+    height: 120px;
+    background: none;
+}
+.element img {
+    width: 100px;
+    height: 60px;
+}
+.elements {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    border: 2px solid green;
+    border-radius: 5px;
+    width: 100%;
+}
+.element p {
+    margin: 5px;
+}
+.delbut {
+    font-size: 12px;
+    
+}

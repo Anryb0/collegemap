@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#image {
+    transition: transform 0.2s;
+    cursor: grab;
+    position: absolute; /* Убедитесь, что изображение позиционируется правильно для перемещения */
+}

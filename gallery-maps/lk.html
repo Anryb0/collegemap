@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anryb0 Corp.</title>
-    <link rel="stylesheet" href="../all.css?8">
-    <link rel='icon' href='logo.jpg'>
+    <title>Gallery Maps</title>
+    <link rel="stylesheet" href="../all.css?43">
+    <link rel="stylesheet" href="styles/userstyles.css?18">
+    <link rel='icon' href='icon.png'>
 </head>
 <body>
     <header>
-        <div class="logo"><img src="logo.jpg" id='logo'>
-        <h1>Anryb0 Corp.</h1></div>
+        <a href='index.html' id='toback'><div class="logo"><img src="icon.png" id='logo'>
+        <h1>Gallery Maps</h1></div></a>
         <div id='logbuttons'>
             <button id="reg">Вход</button>
             <button id='breg'>Регистрация</button>
@@ -19,11 +20,12 @@
             <span id='currentlogin'></span>
             <button id='logout'>Выход</button>
         </div>
+
     </header>
+
     <main>
-        <hr id='tophr'>
-        <p id="toptext">Доступные сервисы:</p>
-        <div class="login" id="login">
+    <hr>
+    <div class="login" id="login">
             <div class="login-elements">
                 <span class="close">&times;</span>
                 <h2>Вход</h2>
@@ -32,13 +34,6 @@
                 <p id="loginfo"></p>
                 <br>
                 <button id="log">Войти</button>
-            </div>
-        </div>
-        <div class="desc" id="desc">
-            <div class="desc-elements">
-                    <span class="close">&times;</span>
-                    <h2>Описание сервиса</h2>
-                    <p class="desc-text"></p>
             </div>
         </div>
         <div class='register' id='register'>
@@ -53,19 +48,17 @@
                 <button id="bregister">Регистрация</button>
             </div>
         </div>
-        <div id ="elements">
-            <a class="element" href='gallery-maps/index.html'>
-                <img class="sphoto" src ='bigicon.jpg'>
-                <p class="sname">Gallery Maps</p>
-                <button class="details">Подробнее</button>
-            </a>
+        <p style='text-align:center'>Мои публикации</p>
+        <div id='userinfo'>
+            <p id='useritems'></p>
+            <div id='posts'></div>
         </div>
     </main>
     <footer>
         <hr>
-        <p>Anryb0 Corp. 2024</p>
+        <p>Anryb0 Corp. 2024.</p>
     </footer>
-    <script src="all.js?3"></script>
-    <script src="script.js?3"></script>
+    <script src="scripts/lkscript.js?20"></script>
+    <script src="../all.js?17"></script>
 </body>
 </html>

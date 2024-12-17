@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery Maps</title>
-    <link rel="stylesheet" href="../all.css?43">
-    <link rel="stylesheet" href="styles/mapstyles.css?5">
+    <link rel="stylesheet" href="../all.css">
+    <link rel="stylesheet" href="styles/mapstyles.css">
     <link rel='icon' href='icon.png'>
 </head>
 <body>
@@ -56,7 +56,7 @@
                 <p class = 'finfo' id='ispan'>Для панорамного просмотра рекомендуется загрузка сферической панорамы 360 градусов, а не обычной фотографии.</p>
                 <p>Название:*<input type="text" id="i8" class="smallform"></p>
                 <p>Описание:*<input type="text" id="i9" class="smallform"></p>
-                <p class = 'finfo'>Как ваша фотография будет расположена относительно других? Текст на кнопке - расположение новой фотографии относительно добавленных.</p>
+                <p class = 'finfo'>Как ваша фотография будет расположена относительно других? Текст на кнопке - расположение существующей фотографии относительно новой.</p>
                 <div id='elements'>
                 </div>
                 <p id='opterror'></p>
@@ -67,16 +67,14 @@
             </div>
         </div>
         <div id= 'info'>
-            <p id='nowinfo'><span id='now'></span><button id='switch'></button><button id='bedit'>+</button><button id='refresh'>↻</button></p>
+            <p id='nowinfo'><span id='now'></span><button id='switch'></button><button id='bedit'>+</button></p>
         </div>
         <div id='main'>
             <div id="container">
 
             </div>
             <div id='map'>
-                <table id='table'>
-                
-                </table>
+
             </div>
         </div>
         <p id='error'></p>
@@ -102,11 +100,20 @@
         <br>
         <div class="message"><span id="posInfo"></span></div>
         <hr>
-        <p>Anryb0 Corp. 2024</p>
+        <p>For testing purposes.</p>
     </footer>
-    <script src="lib/three.min.js?"></script>
+    
+    <aside style="display: none;">
+        <ul>
+            <li><a href="#">Страница 1</a></li>
+            <li><a href="#">Страница 2</a></li>
+            <li><a href="#">Страница 3</a></li>
+            <li><a href="#">Страница 4</a></li>
+        </ul>
+    </aside>
+    <script src="lib/three.min.js"></script>
     <script src="lib/panolens.min.js"></script>
-    <script src="../all.js?6"></script>
-    <script src="scripts/mapscript.js?16"></script>
+    <script src="../all.js"></script>
+    <script src="scripts/mapscript.js"></script>
 </body>
 </html>

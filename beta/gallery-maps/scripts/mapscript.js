@@ -7,10 +7,7 @@ const change = document.getElementById('switch'); // кнопка смена р�
 const container = document.getElementById('container'); // контейнер для панорамы или фото
 const errortext = document.getElementById('error'); // текст ошибки
 
-let sf = '';
-let sb = '';
-let sr = '';
-let sl = '';
+let sf, sb, sr, sl = '' ;
 
 // формы для отправки на сервер
 const sphotoid = document.getElementById('i2');
@@ -24,6 +21,9 @@ let l, r, f, b; // фотографии, которые находятся в р
 let scene, camera, renderer, plane; // объекты three.js
 let isUserInteracting = false; // флаг взаимодействует ли пользователь с картой
 
+let onMouseDownMouseX = 0, onMouseDownMouseY = 0; // для работы мыши
+let scaleFactor = 2.2, isMouseOverImage = 1; // масштаб, флаг мыши над картой
+
 let viewer, panorama; // объекты panolens
 
 let ispanoram // флаг для переключения режимов отображения
@@ -36,12 +36,8 @@ else {
     ispanoram = urlParams.get('ispanoram');
 }
 
-if(localStorage.getItem('curph') && localStorage.getItem('mapid') == mapId){
-    currentphoto = parseInt(localStorage.getItem('curph'));
-}
-
 if(urlParams.get('photo')){
-    currentphoto = parseInt(urlParams.get('photo') - 1);
+    currentphoto = parseInt(urlParams.get('photo') - 1)
 }
 
 if(localStorage.getItem('login')){
@@ -108,7 +104,6 @@ send.addEventListener('click', function() {
                     formData.append('b', sb);
                     formData.append('l', sl);
                     formData.append('r', sr);
-                    formData.append('f', sf);
                     formData.append('mapid', mapId);
                     formData.append('num', num2);
 
@@ -148,16 +143,10 @@ if(ispanoram == '0'){
     })
     // обновление фотографии  
     function photoupdate(photoId) {
-       scale = 1;
-       newimage.style.left = 0;
-       newimage.style.top = 0;
-       init()
         if (photosData[photoId]){
             const img = new Image();
             img.src = "https://anryb0.online/gallery-maps/images/" + photosData[photoId].photoUrl;
             img.onload = function() {
-                currentphoto = photoId
-                console.log(currentphoto)
                 const width = container.width;
                 const height = container.height;
                 createImage(img.src, width, height);
@@ -173,34 +162,35 @@ if(ispanoram == '0'){
             }
         }
         else {
-            photoupdate(0);
+            errortext.innerText = "Информация о данном фото отсутствует.";
+            errortext.style.background = 'red';
         }
     }
     
+    // нужные переменые 
+    let newimage = document.createElement('IMG');
+    let scale = 1;
+    let isDragging = false;
+    let startX, startY, initialX, initialY;
+    
     // инициализация чего-то 
     function init() {
-        // нужные переменые 
-        window.newimage = document.createElement('IMG');
-        window.scale = 1;
-        window.isDragging = false;
-        window.startX, window.startY, window.initialX, window.initialY;
+        
     }
-    
     // добавление фото
     function createImage(imageUrl, width, height) {
         // очистка div
         while(container.firstChild){
             container.removeChild(container.firstChild);
         }
-        scale = 1
         
         // добавляем элемент 
         container.appendChild(newimage);
         
         // установка стилей и атрибутов
         newimage.src = imageUrl;
-        newimage.style.width = width ;
-        newimage.style.height = height ;
+        newimage.style.width = width + 'px';
+        newimage.style.height = height + 'px';
         newimage.draggable = false;
         container.style.position = 'relative';
         newimage.style.position = 'absolute';
@@ -208,8 +198,8 @@ if(ispanoram == '0'){
         // изменение масштаба
         newimage.addEventListener('wheel', function(event) {
             event.preventDefault();
-            scale += event.deltaY * -0.001; 
-            scale = Math.min(Math.max(0.2, scale), 4);
+            scale += event.deltaY * -0.0003; // это влияет на скорость масштабирования 
+            scale = Math.min(Math.max(0.125, scale), 4);
             newimage.style.transformOrigin = 'center center';
             newimage.style.transform = 'scale(' + scale + ')';
         });
@@ -249,60 +239,32 @@ if(ispanoram == '0'){
         window.addEventListener('mouseup', handleMouseUp);
         window.addEventListener('mousemove', handleMouseMove);
 
-        let initialDistance = null;
-        
         // для тачскринов
         newimage.addEventListener('touchstart', function(event) {
-            if (event.touches.length === 2) {
-                initialDistance = Math.hypot(
-                event.touches[0].clientX - event.touches[1].clientX,
-                event.touches[0].clientY - event.touches[1].clientY
-                );
-            } else if (event.touches.length === 1) {
-                 event.preventDefault();
-                isDragging = true;
-                startX = event.touches[0].clientX;
-                startY = event.touches[0].clientY;
-                initialX = newimage.offsetLeft;
-                initialY = newimage.offsetTop;
-                newimage.style.cursor = 'grabbing';
-            }
+            isDragging = true;
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+            initialX = newimage.offsetLeft;
+            initialY = newimage.offsetTop;
+            newimage.style.cursor = 'grabbing';
         });
         
         newimage.addEventListener('touchmove', function(event) {
-            if (event.touches.length === 2 && initialDistance) {
-                event.preventDefault();
-                const currentDistance = Math.hypot(
-                event.touches[0].clientX - event.touches[1].clientX,
-                event.touches[0].clientY - event.touches[1].clientY
-                );
-                scale *= currentDistance / initialDistance;
-                initialDistance = currentDistance;
-                scale = Math.min(Math.max(0.2, scale), 4);
-                newimage.style.transform = 'scale(' + scale + ')';
-            } else if (isDragging) {
-                const dx = event.touches[0].clientX - startX;
-                const dy = event.touches[0].clientY - startY;
-                newimage.style.left = `${initialX + dx}px`;
-                newimage.style.top = `${initialY + dy}px`;
+            if (isDragging) {
+                var dx = event.touches[0].clientX - startX;
+                var dy = event.touches[0].clientY - startY;
+                setPosition(initialX + dx, initialY + dy);
+                if(event.touches.length < 2){
+                    event.preventDefault();
+                }
             }
         });
         
         newimage.addEventListener('touchend', function() {
             isDragging = false;
-            initialDistance = null;
             newimage.style.cursor = 'grab';
         });
     };
-    
-    // кнопка обновления
-    document.getElementById('refresh').addEventListener('click', function() {
-       scale = 1;
-       newimage.style.left = 0;
-       newimage.style.top = 0;
-       init()
-       photoupdate(currentphoto)
-    });
 }
 // код для панорамных карт
 if (ispanoram == '1') { 
@@ -317,8 +279,6 @@ if (ispanoram == '1') {
     
     // обновление фото
     function photoupdate(photoId) {
-        currentphoto = photoId
-        console.log(currentphoto)
         if (photosData[photoId]){
             createImage('images/' + photosData[photoId].photoUrl);
             l = photosData[photoId].l;
@@ -332,7 +292,8 @@ if (ispanoram == '1') {
             localStorage.setItem('curph',photoId)
         }
         else {
-            photoupdate(0)
+            errortext.innerText = "Информация о данном фото отсутствует";
+            errortext.style.background = 'red';
         }
     }
     
@@ -356,9 +317,6 @@ if (ispanoram == '1') {
         });
 	    viewer.add(panorama);
     }
-     document.getElementById('refresh').addEventListener('click', function() {
-       photoupdate(currentphoto)
-    });
 }
 
 
@@ -377,7 +335,7 @@ function relatedPhotos(photosData){
            newdiv.appendChild(newname);
            if(!photosData[i].b){
                let bf = document.createElement('BUTTON');
-               bf.innerText = 'Сзади';
+               bf.innerText = 'Спереди';
                bf.classList.add('fbuttons');
                let bfflag = false;
                newdiv.appendChild(bf);
@@ -398,7 +356,7 @@ function relatedPhotos(photosData){
            }
            if(!photosData[i].r){
                let bl = document.createElement('BUTTON');
-               bl.innerText = 'Справа';
+               bl.innerText = 'Слева';
                bl.classList.add('lbuttons');
                let blflag = false;
                newdiv.appendChild(bl);
@@ -419,7 +377,7 @@ function relatedPhotos(photosData){
            }
            if(!photosData[i].f){
                let bb = document.createElement('BUTTON');
-               bb.innerText = 'Спереди';
+               bb.innerText = 'Сзади';
                bb.classList.add('bbuttons');
                newdiv.appendChild(bb); 
                let bbflag = false;
@@ -440,7 +398,7 @@ function relatedPhotos(photosData){
            }
            if(!photosData[i].l){
                let br = document.createElement('BUTTON');
-               br.innerText = 'Слева';
+               br.innerText = 'Справа';
                br.classList.add('rbuttons');
                newdiv.appendChild(br);
                let brflag = false;
@@ -503,10 +461,10 @@ function renderButtons(l, r, f, b) {
     document.getElementById('back').style.visibility = 'hidden';
     document.getElementById('left').style.visibility = 'hidden';
     document.getElementById('right').style.visibility = 'hidden';
-    if (b) {
+    if (f) {
         document.getElementById('forward').style.visibility = 'visible';
     }
-    if (f) {
+    if (b) {
         document.getElementById('back').style.visibility = 'visible';
     }
     if (l) {
@@ -518,53 +476,56 @@ function renderButtons(l, r, f, b) {
 }
 // создание таблицы
 function createtable (data) {
-    var currentRowIndex = 0; 
-    while (currentRowIndex !== null) { 
-    var row = data[currentRowIndex]; 
-    var tr = table.insertRow(); 
-    var keys = ['l', 'num', 'r'];
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var td = document.createElement('td'); 
-        if (row[key] == null) {
-            td.innerText = '';
-        } else {
-            var relatedRow = data[parseInt(row[key]) - 1];
-            if (relatedRow) {
-                td.innerText = relatedRow.name; 
-            } else {
-                td.innerText = row[key]; 
-        }
+   function createtable(data) {
+    const table = document.createElement('table'); // Создаем новую таблицу
+    const headerRow = table.insertRow(); // Создаем строку для заголовков
 
-        td.addEventListener('click', function(currentRow, key) {
-            return function() {
-            if (key == 'l') {
-                photoupdate(currentRow.l - 1);
-            } else if (key == 'num') {
-                photoupdate(currentRow.num - 1);
-            } else if (key == 'r') {
-                photoupdate(currentRow.r - 1);
+    // Создаем заголовки таблицы в нужном порядке
+    const headerKeys = ['l', 'num', 'r', 'f', 'b'];
+    
+    headerKeys.forEach(function(key) {
+        const th = document.createElement('th');
+        th.innerText = key; // Заголовок будет именем поля
+        headerRow.appendChild(th);
+    });
+
+    // Заполнение таблицы данными
+    for (let i = 0; i < data.length; i++) {
+        const tr = table.insertRow();
+        const row = data[i];
+        
+        headerKeys.forEach(function(key) {
+            const td = document.createElement('td');
+            if (row[key] !== null) {
+                const relatedRow = data[parseInt(row[key]) - 1];
+                if (relatedRow) {
+                    td.innerText = relatedRow.name; // Выводит имя связанной строки
+                } else {
+                    td.innerText = row[key]; // Если связанной строки нет, выводим значение ключа
+                }
+            } else {
+                td.innerText = ''; // Если значение null, оставляем ячейку пустой
             }
-        };
-        } (row, key));
-        }
-        tr.appendChild(td); 
+
+            // Добавляем обработчик событий для ячейки
+            td.addEventListener('mouseover', function() {
+                photoupdate(row[key] - 1);
+            });
+
+            tr.appendChild(td);
+        });
     }
-        currentRowIndex = row.f - 1;1 
-    }
+    
     document.body.appendChild(table); // Добавляем таблицу в тело документа
 }
-    
-
-
-
+}
 
 // добавление обработчиков кнопок
 document.getElementById('forward').addEventListener('click', function() {
-    photoupdate(b-1);
+    photoupdate(f-1);
 });
 document.getElementById('back').addEventListener('click', function() {
-    photoupdate(f-1);
+    photoupdate(b-1);
 });
 document.getElementById('left').addEventListener('click', function() {
     photoupdate(l-1);

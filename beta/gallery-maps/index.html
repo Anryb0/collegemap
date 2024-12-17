@@ -4,53 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery Maps</title>
-    <link rel="stylesheet" href="styles/aboutstyles.css?6">
-    <link rel="stylesheet" href="../all.css?43">
+    <link rel="stylesheet" href="styles/indexstyles.css?4">
+    <link rel="stylesheet" href="../all.css?3">
     <link rel='icon' href='icon.png'>
 </head>
 <body>
     <header>
-        <a href='index.html' id='toback'><div class="logo"><img src="icon.png" id='logo'>
+        <a href='../index.html' id='toback'><div class="logo"><img src="icon.png" id='logo'>
         <h1>Gallery Maps</h1></div></a>
         <div id='logbuttons'>
             <button id="reg">Вход</button>
             <button id='breg'>Регистрация</button>
         </div>
         <div id='loggedin'>
-            <span id='currentlogin'></span>
+            <a href='lk.html'><span id='currentlogin'></span></a>
             <button id='logout'>Выход</button>
         </div>
-
     </header>
-
     <main>
-                    <hr>
-    <div class="login" id="login">
-            <div class="login-elements">
+        <hr id='tophr'>
+        <p id = 'toptext'><button id='bedit'>+ Добавить локацию</button></p>
+        <div class="edit" id="edit">
+            <div class="edit-elements">
                 <span class="close">&times;</span>
-                <h2>Вход</h2>
-                <p>Логин:<input type="text" id="logintext"></p>
-                <p>Пароль:<input type="password" id="password"></p>
-                <p id="loginfo"></p>
+                <h2 id = 'h2'>Добавить локацию</h2>
+                <p>Название: <input type="text" id="i1" class="form"></p>
+                <p>Описание: <input type="text" id="i2" class="form"></p>
+                <p>Обложка локации (картинка .jpg): <input type="file" id="i3" class="smallform"></p>
+                <p>Рекомендуемый режим просмотра: <select id="ispanoram">
+                    <option value='yes'>Панорама</option>
+                    <option value='no'>Фото</option>
+                </select></p>
                 <br>
-                <button id="log">Войти</button>
+                <button id="send">Добавить</button>
+                <br>
+                <p><progress id='pgbar' value='0' max='100'></progress><span id='percent'></span></p>
+                <p id="sendinfo"></p>
             </div>
         </div>
-        <div class='register' id='register'>
-            <div class="register-elements">
+        <div class="desc" id="desc">
+            <div class="desc-elements">
                 <span class="close">&times;</span>
-                <h2>Регистрация</h2>
-                <p>Логин:<input type="text" id="logintext1"></p>
-                <p>Пароль:<input type="password" id="password1"></p>
-                <p>Повторите пароль:<input type="password" id="password2"></p>
-                <p id = "reginfo"></p>
-                <br>
-                <button id="bregister">Регистрация</button>
+                <h2>Описание локации</h2>
+                <p class="desc-text"></p>
             </div>
         </div>
-        <div id='content'>
-        <div id='verhistory'>
-         <h2>История версий</h2>
+        <div class="newver" id="newver">
+            <div class="newver-elements">
+                <span class="close">&times;</span>
+                <h2>История версий</h2>
                 <h3>0.8.1</h3>
                 <ul>
                     <li>Содержимое главной страницы теперь генерируется автоматически</li>
@@ -84,40 +86,39 @@
                     <li>Добавлена главная страница сайта</li>
                     <li>Изменения дизайна на странице просмотра карт</li>
                 </ul>
-                <h3>0.9.3</h3>
-                <ul>
-                    <li>Добавлена отдельная страница для истории версий</li>
-                    <li>Измененное окно "Добавить фото" - стало проще выбирать примыкающие фото</li>
-                    <li>Немного изменен дизайн главной страницы</li>
-                </ul>
-                <h3>0.9.4</h3>
-                <ul>
-                    <li>Обложки карт сжимаются</li>
-                    <li>Еще изменения дизайна</li>
-                </ul>
-                <h3>0.9.5</h3>
-                <ul>
-                    <li>Теперь просмотр в режиме фото полноценно работает на тачскрине - приближение и перемещение фото.</li>
-                    <li>Сайт теперь работает по протоколу HTTPS - больше никто не сможет изменить трафик, пропали рекламные объявления от оператора.</li>
-                    <li>При изменении режима просмотра или повторном открытии локации сохраняется последнее просмотренное фото.</li>
-                    <li>Продолжение работы над дизайном.</li>
-                </ul>
-                <h3>1.0</h3>
-                <ul>
-                    <li>Новый шрифт</li>
-                    <li>Изменения интерфейса</li>
-                    <li>Добавлен раздел с публикациями пользователя, также там можно удалить фото</li>
-                </ul>
+            </div>
         </div>
-        <div id='maininfo'>
-            <p>Текущая версия: 1.0</p>
+        <div class="login" id="login">
+            <div class="login-elements">
+                <span class="close">&times;</span>
+                <h2>Вход</h2>
+                <p>Логин:<input type="text" id="logintext"></p>
+                <p>Пароль:<input type="password" id="password"></p>
+                <p id="loginfo"></p>
+                <br>
+                <button id="log">Войти</button>
+            </div>
         </div>
-    </div>
+        <div class='register' id='register'>
+            <div class="register-elements">
+                <span class="close">&times;</span>
+                <h2>Регистрация</h2>
+                <p>Логин:<input type="text" id="logintext1"></p>
+                <p>Пароль:<input type="password" id="password1"></p>
+                <p>Повторите пароль:<input type="password" id="password2"></p>
+                <p id = "reginfo"></p>
+                <br>
+                <button id="bregister">Регистрация</button>
+            </div>
+        </div>
+        <div id ="elements">
+        </div>
     </main>
     <footer>
         <hr>
-        <p>Anryb0 Corp. 2024.</p>
+        <p>Anryb0 Corp. 2024. For testing purposes.<a href='about.html'>Информация</a></p>
     </footer>
-    <script src="../all.js?4"></script>
+    <script src="scripts/indexscript.js?3"></script>
+    <script src="../all.js?3"></script>
 </body>
 </html>
