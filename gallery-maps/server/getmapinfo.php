@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
     }
     echo json_encode(['success' => true, 'maps' => $data]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Карт не найдено.']);
+    echo json_encode(['success' => false, 'message' => 'Локации отсутствуют.']);
 }
 $stmt->close();
 $conn->close();

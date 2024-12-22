@@ -17,11 +17,11 @@ if ($result->num_rows > 0) {
     if (password_verify($password, $user['password'])) {
     echo json_encode(['success' => true, 'log' => true]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'неправильный пароль']);
+    echo json_encode(['success' => false, 'message' => 'Неправильный пароль']);
 }
 }
 else {
-    echo json_encode(['success' => false, 'message' => 'нет такого']);
+    echo json_encode(['success' => false, 'message' => 'Пользователь не найден']);
 }
 $stmt->close();
 $conn->close();

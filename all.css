@@ -108,7 +108,7 @@ button {
     font-family: "Noto Sans", sans-serif;
     font-weight: 500;
 }
-.desc, .login, .register, .newver, .edit {
+.desc, .login, .register, .newver, .edit{
     text-align: center;
     display: none; 
     position: fixed;
@@ -123,13 +123,20 @@ button {
     position: relative;
     z-index: 0;
 }
-.desc-elements, .login-elements, .edit-elements, .register-elements, .newver-elements, .edit-elements {
+.desc-elements, .login-elements, .edit-elements, .register-elements, .newver-elements, .edit-elements{
     background: #1c1c1c;
-    margin: 2% auto; 
-    padding: 20px;
-    border: 3px solid green;
+    margin: 10px auto; 
+    padding: 15px;
+    border: 2px solid green;
     width: 60%;
     border-radius: 5px;
+}
+.desc {
+    height: 100%;
+}
+.desc-elements {
+    margin: auto;
+    height: auto;
 }
 #loginfo, #reginfo, #sendinfo{
     border-radius: 5px;
@@ -158,7 +165,7 @@ hr {
     cursor: pointer;
 }
 /* анимации */ 
-.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out, .newver.fade-out, .edit.fade-out {
+.desc.fade-out, .login.fade-out, .edit.fade-out, .register.fade-out, .newver.fade-out, .edit.fade-out{
     animation: fadeOut 0.3s forwards; 
 }
 @keyframes fadeIn {
@@ -176,6 +183,8 @@ hr {
 progress {
     background: green;
     margin-right: 5px;
+    border-radius: 5px;
+    border: 1px solid green;
 }
 #toptext {
     text-align: center;
@@ -194,8 +203,8 @@ progress {
 }
 .element {
     text-align: center;
-    border: none;
     border-radius: 5px;
+    border: none;
     padding: 5px;
     transition: transform 0.3s;
     background: none;
@@ -229,16 +238,21 @@ button {
 #mapname {
     width: 600px; 
 }
-#lk {
-    background: none;
-    border: none;
-    font-size: 16px;
-    margin: 0;
-    padding: 0;
+
+input:not([type="file"]) {
+    width: auto;
+    border-radius: 5px;
+    border: 2px solid green;
 }
-#lk:hover {
+.pname:hover {
     text-decoration: underline;
 }
-input {
+#usermenu {
+    display: none;
+    text-align: right;
+    animation: fadeIn 0.3s;
+}
+#usermenu button {
+    margin-top: 0;
     width: auto;
 }

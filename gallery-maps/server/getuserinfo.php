@@ -32,11 +32,42 @@ if ($result->num_rows > 0) {
             'r' => $photo['r']
         ];
     }
-    echo json_encode(['success' => true, 'photos' => $photos]);
-} else {
-    echo json_encode(['success' => false, 'message' => 'ошибка']);
+}
+
+$stmt->close();
+
+$stmt = $conn->prepare("SELECT m.name, m.photo_url, m.id FROM maps m
+    LEFT JOIN users u ON m.user_id = u.id
+    WHERE u.login = ?");
+$stmt->bind_param("s", $login);
+$stmt->execute();
+$result = $stmt->get_result();
+$maps = [];
+
+if ($result->num_rows > 0) {
+    while ($map = $result->fetch_assoc()) {
+        $maps[] = [
+            'name' => $map['name'],
+            'photourl' => $map['photo_url'],
+            'id' => $map['id'],
+        ];
+    }
 }
 
 $stmt->close();
 $conn->close();
+
+
+$response = [
+    'success' => true,
+    'photos' => $photos,
+    'maps' => $maps,
+];
+
+if (empty($photos) && empty($maps)) {
+    $response['success'] = false;
+    $response['message'] = 'Нет данных';
+}
+
+echo json_encode($response);
 ?>

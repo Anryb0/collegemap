@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery Maps</title>
-    <link rel="stylesheet" href="../all.css?43">
-    <link rel="stylesheet" href="styles/mapstyles.css?5">
+    <link rel="stylesheet" href="../all.css?30">
+    <link rel="stylesheet" href="styles/mapstyles.css?30">
     <link rel='icon' href='icon.png'>
 </head>
 <body>
@@ -19,10 +19,14 @@
         </div>
         <div id='loggedin'>
             <span id='currentlogin'></span>
-            <button id='logout'>Выход</button>
+            <button id='showmenu'>⋯</button>
         </div>
     </header>
     <main>
+        <div id='usermenu'>
+            <a href='lk.html'>Мои публикации</a>
+            <button id='logout'>Выход</button>
+        </div>
         <hr>
         <div class="login" id="login">
             <div class="login-elements">
@@ -51,8 +55,7 @@
             <div class="edit-elements">
                 <span class="close">&times;</span>
                 <h2>Добавить фото</h2>
-                <p class = 'finfo'>Обязательные поля отмечены *. Ниже необходимо загрузить 1 файл .jpg</p>
-                <p>Файл:*<input type="file" id="i7" class="smallform"></p>
+                <p>Файл:*<input type="file" id="i7" class="smallform" accept=".jpg, .jpeg, .png" required></p>
                 <p class = 'finfo' id='ispan'>Для панорамного просмотра рекомендуется загрузка сферической панорамы 360 градусов, а не обычной фотографии.</p>
                 <p>Название:*<input type="text" id="i8" class="smallform"></p>
                 <p>Описание:*<input type="text" id="i9" class="smallform"></p>
@@ -106,7 +109,7 @@
     </footer>
     <script src="lib/three.min.js?"></script>
     <script src="lib/panolens.min.js"></script>
-    <script src="../all.js?6"></script>
-    <script src="scripts/mapscript.js?16"></script>
+    <script src="../all.js?30"></script>
+    <script src="scripts/mapscript.js?30"></script>
 </body>
 </html>

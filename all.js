@@ -16,7 +16,7 @@ const bedit =  document.getElementById('bedit'); // кнопка чтобы до
 
 const edit = document.getElementById('edit'); // форма редактирования
 
-const newver = document.getElementById('newver'); // история версий
+const usermenu = document.getElementById('usermenu'); // меню пользователя
 
 const pgbar = document.getElementById('pgbar'); // прогрессбар загрузки файла
 
@@ -29,6 +29,11 @@ const reginfo = document.getElementById('reginfo'); // информация в �
 // проверка зашел ли пользователь в систему
 if(localStorage.getItem('login')){
     successlogin()
+}
+else {
+    if(bedit){
+        bedit.style.display = 'none'
+    }
 }
 // функция, которая срабатывает при успешном входе, изменяет параметры видимости элементов, выводит приветствие 
 function successlogin(){
@@ -72,11 +77,13 @@ document.getElementById('log').addEventListener('click', function() {
         } else {
             loginfo.innerText = data.message;
             loginfo.style.display = 'inline-block';
+            loginfo.style.background = 'red';
         }
     })
         .catch(function(error) {
             loginfo.innerText = error;
             loginfo.style.display = 'inline-block';
+            loginfo.style.background = 'red';
         });
     }
 });
@@ -84,6 +91,9 @@ document.getElementById('log').addEventListener('click', function() {
 // закрытие всех окон при нажатии на любой крестик 
 closex.forEach(function(item){
    item.addEventListener('click', function() {
+            if(usermenu) {
+                hide(usermenu);
+            }
             if(desc){
                 hide(desc);
             }
@@ -112,7 +122,14 @@ reg.addEventListener('click', function() {
             }
         login.style.display = 'block';
 });
-
+document.getElementById('showmenu').addEventListener('click', function() {
+    if(usermenu.style.display == 'block'){
+        usermenu.style.display = 'none'
+    }
+    else {
+        usermenu.style.display = 'block'
+    }
+});
 // обработчик плавного закрытия окон
 function hide(element) {
     element.classList.add('fade-out'); 
@@ -125,7 +142,7 @@ function hide(element) {
 // при нажатии на нопку регистрации
 document.getElementById('bregister').addEventListener('click', function() {
     // проверка совпадения паролей + того, что все поля заполнены
-    if (!document.getElementById('logintext1').value || !document.getElementById('password1').value || document.getElementById('password1').value !== document.getElementById('password2').value) {
+    if (!document.getElementById('logintext1').value || !document.getElementById('password1').value || document.getElementById('password1').value !== document.getElementById('password2').value || document.getElementById('logintext1').value.length > 20) {
         reginfo.innerText = 'Пожалуйста, заполните поля';
         reginfo.style.background = 'red';
         reginfo.style.display = 'inline-block';
@@ -140,7 +157,7 @@ document.getElementById('bregister').addEventListener('click', function() {
         })
         .then(function(response) {
         if (!response.ok) {
-            throw new Error('ошибка: ' + response.statusText);
+            throw new Error('Ошибка: ' + response.statusText);
         }
         return response.json();
     })

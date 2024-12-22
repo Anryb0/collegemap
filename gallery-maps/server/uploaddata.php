@@ -8,6 +8,7 @@ $smapid = $_POST['smapid'];
 $login = $_POST['login'];
 $name = $_POST['name'];
 $opisanie = $_POST['opisanie'];
+$mapname = $_POST['mapname'];
 $sf = ($_POST['sf'] == '') ? null : $_POST['sf'];
 $sb = ($_POST['sb'] == '') ? null : $_POST['sb'];
 $sl = ($_POST['sl'] == '') ? null : $_POST['sl'];
@@ -18,7 +19,7 @@ $randomString = substr(str_shuffle($characters), 0, 10);
 
 $uploadDir = 'images/';
 $fileName = $randomString . basename($_FILES['file']['name']);
-$filePath = __DIR__ . '/../images/' . $fileName;
+$filePath = __DIR__ . '/../images/' .$smapid . '/'. $fileName;
 $fileType = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
 
 $stmt = $conn->prepare("select id from users where login = ?");
@@ -46,24 +47,55 @@ if ($result->num_rows > 0) {
 $stmt->close();
 
 if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
-    if ($fileType != 'jpg' && $fileType != 'jpeg') {
-        echo json_encode(['success' => false, 'message' => 'Допустимы только JPG файлы.']);
+
+    $fileType = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+
+    if ($fileType != 'jpg' && $fileType != 'jpeg' && $fileType != 'png') {
+        echo json_encode(['success' => false, 'message' => 'Допустимы только JPG и PNG файлы.']);
         exit;
     }
+    if (!is_dir(__DIR__ . '/../images/' .$smapid)) {
+        mkdir(__DIR__ . '/../images/' .$smapid, 0777, true);
+    }
+
     if (move_uploaded_file($_FILES['file']['tmp_name'], $filePath)) {
         $compressedFileName = '_compressed' . $fileName;
-        $compressedFilePath = __DIR__ . '/../images/' . $compressedFileName;
-        $sourceImage = imagecreatefromjpeg($filePath); 
+        $compressedFilePath = __DIR__ . '/../images/' . $smapid . '/'. $compressedFileName;
+        if ($fileType == 'jpg' || $fileType == 'jpeg') {
+            $sourceImage = imagecreatefromjpeg($filePath);
+        } else if ($fileType == 'png') {
+            $sourceImage = imagecreatefrompng($filePath);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Неподдерживаемый формат изображения.']);
+            exit;
+        }
+        
         $width = imagesx($sourceImage);
         $height = imagesy($sourceImage);
         $newWidth = 240;
         $newHeight = (int)($height * ($newWidth / $width));
+
         $compressedImage = imagecreatetruecolor($newWidth, $newHeight);
+
+        if ($fileType == 'png') {
+            imagealphablending($compressedImage, false);
+            imagesavealpha($compressedImage, true);
+            $transparent = imagecolorallocatealpha($compressedImage, 255, 255, 255, 127);
+            imagefilledrectangle($compressedImage, 0, 0, $newWidth, $newHeight, $transparent);
+        }
+
         imagecopyresampled($compressedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-        imagejpeg($compressedImage, $compressedFilePath, 75); 
+
+        if ($fileType == 'jpg' || $fileType == 'jpeg') {
+            imagejpeg($compressedImage, $compressedFilePath, 75);
+        } else if ($fileType == 'png') {
+            imagepng($compressedImage, $compressedFilePath, 6); // уровень сжатия 0-9
+        }
+
         imagedestroy($sourceImage);
         imagedestroy($compressedImage);
-        $stmt = $conn->prepare("insert into photos (map_id, num, l, r, f, b, photo_url, name, user_id, opisanie) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        
+        $stmt = $conn->prepare("INSERT INTO photos (map_id, num, l, r, f, b, photo_url, name, user_id, opisanie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("iiiiiissis", $smapid, $sphotoid, $sl, $sr, $sf, $sb, $fileName, $name, $user_id, $opisanie);
 
         if ($stmt->execute()) {

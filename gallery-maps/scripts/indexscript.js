@@ -85,7 +85,7 @@ body: formData
             button.addEventListener('click', function() {
             event.preventDefault(); 
             desctext.textContent = descriptions[index];
-            desc.style.display = 'block';
+            desc.style.display = 'flex';
             });
         });
         // отображение имен, фото карт
@@ -105,11 +105,11 @@ body: formData
             item.href = ('map.html?mapId=' + mapids[index] +'&ispanoram='+ispanorams[index]+'&name='+names[index] ); 
         });
     } else {
-        console.log(data.message);
+        document.getElementById('toptext1').innerText = data.message;
     }
 })
 .catch(function(error) {
-    console.log(error);
+    document.getElementById('toptext1').innerText = error;
 });
 
 // отображение формы регистрации при нажатии на кнопку
@@ -118,59 +118,94 @@ document.getElementById('breg').addEventListener('click', function() {
 });
 
 send.addEventListener('click', function() {
-    // данные для отправки на сервер
     let formData = new FormData();
     formData.append('login', localStorage.getItem('login'));
     formData.append('name', locname.value);
-    formData.append('opisanie', locdesc.value);
-    formData.append('isp',document.getElementById('ispanoram').value)
-    document.getElementById('percent').style.display = 'none'
-    pgbar.style.display = 'none';
-    sendinfo.style.display = 'none';
-    // запрос на сервер выполняется только если поля заполнены
-    if (file.files.length === 1 && locname.value && locdesc.value) {
-        formData.append('file', file.files[0]);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'server/newmap.php', true);
-        pgbar.style.display = 'inline-block';
-        document.getElementById('percent').style.display = 'inline'
-        xhr.upload.onprogress = function(event) {
-            if (event.lengthComputable) {
-                var percent = (event.loaded / event.total) * 100;
-                pgbar.value = percent;
-                document.getElementById('percent').innerText = Math.round(percent) + ' %'
-            }
-        };
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log(xhr.responseText)
-                var data = JSON.parse(xhr.responseText);
-                if (data.success) {
-                    document.getElementById('percent').style.display = 'none'
-                    sendinfo.innerText = '✔';
-                    sendinfo.style.background = 'green';
-                    sendinfo.style.display = 'inline-block';
-                    setTimeout(function() {
-                        location.reload();
-                    }, 300);
-                } else {
-                    sendinfo.innerText = data.message;
-                    sendinfo.style.background = 'red';
-                    sendinfo.style.display = 'inline-block';
-                }
+
+    fetch('server/uniqcheck.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(response) {
+        if (!response.ok) {
+            throw new Error('Сеть не сработала: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.success) {
+            // данные для отправки на сервер
+            formData = new FormData();
+            formData.append('login', localStorage.getItem('login'));
+            formData.append('name', locname.value);
+            formData.append('opisanie', locdesc.value);
+            formData.append('isp', document.getElementById('ispanoram').value);
+            document.getElementById('percent').style.display = 'none';
+            pgbar.style.display = 'none';
+            sendinfo.style.display = 'none';
+
+            // запрос на сервер выполняется только если поля заполнены
+            if (file.files.length === 1 && locname.value && locdesc.value && (file.files[0].type == 'image/jpeg' || file.files[0].type == 'image/png')) {
+                formData.append('file', file.files[0]);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'server/newmap.php', true);
+                pgbar.style.display = 'inline-block';
+                document.getElementById('percent').style.display = 'inline';
+
+                xhr.upload.onprogress = function(event) {
+                    if (event.lengthComputable) {
+                        var percent = (event.loaded / event.total) * 100;
+                        pgbar.value = percent;
+                        document.getElementById('percent').innerText = Math.round(percent) + ' %';
+                        if (percent >= 100) {
+                            pgbar.style.display = 'none';
+                            document.getElementById('percent').innerText = 'Обработка...';
+                        }
+                    }
+                };
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        var data = JSON.parse(xhr.responseText);
+                        if (data.success) {
+                            document.getElementById('percent').style.display = 'none';
+                            sendinfo.innerText = '✔';
+                            sendinfo.style.background = 'green';
+                            sendinfo.style.display = 'inline-block';
+                            setTimeout(function() {
+                                location.reload();
+                            }, 300);
+                        } else {
+                            sendinfo.innerText = data.message;
+                            sendinfo.style.background = 'red';
+                            sendinfo.style.display = 'inline-block';
+                        }
+                    } else {
+                        sendinfo.innerText = 'Ошибка загрузки: ' + xhr.status;
+                        sendinfo.style.background = 'red';
+                        sendinfo.style.display = 'inline-block';
+                    }
+                    pgbar.style.display = 'none';
+                };
+
+                xhr.send(formData);
             } else {
-                sendinfo.innerText = 'Ошибка загрузки: ' + xhr.status;
+                sendinfo.innerText = 'Пожалуйста, заполните обязательные поля. Обложка должна быть .JPG или .PNG';
                 sendinfo.style.background = 'red';
                 sendinfo.style.display = 'inline-block';
             }
-            pgbar.style.display = 'none';
-        };
-        xhr.send(formData);
-    } else {
-        sendinfo.innerText = 'Пожалуйста, заполните обязательные поля. Для каждой записи необходимо добавить по 1 фото.';
+        } else {
+            sendinfo.innerText = 'Вы уже добавили локацию с названием ' + locname.value;
+            sendinfo.style.background = 'red';
+            sendinfo.style.display = 'inline-block';
+        }
+    })
+    .catch(function(error) {
+        sendinfo.innerText = error;
         sendinfo.style.background = 'red';
         sendinfo.style.display = 'inline-block';
-    }
+    });
 });
 
 bedit.addEventListener('click', function() {

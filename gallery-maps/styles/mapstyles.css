@@ -280,7 +280,8 @@ button {
     height: 60px;
 }
 #elements {
-    border: 3px solid green;
+    border: none;
+    justify-items: center;
     border-radius: 5px;
     height: 330px;
     width: auto;
@@ -304,4 +305,8 @@ button {
 }
 td:hover {
     background-color: #004a15;
+    cursor: pointer;
+}
+send {
+    margin-top: 0;
 }

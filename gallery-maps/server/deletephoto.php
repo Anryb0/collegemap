@@ -17,9 +17,9 @@ $stmt->bind_param("ii", $mapid, $num);
 
 if ($stmt->execute()) {
         echo json_encode(['success' => true]);
-        if(file_exists(__DIR__ . '/../images/'. $file)) {
-            unlink(__DIR__ . '/../images/'. $file);
-            unlink(__DIR__ . '/../images/_compressed'. $file);
+        if(file_exists(__DIR__ . '/../images/'. $mapid. '/'. $file)) {
+            unlink(__DIR__ . '/../images/'. $mapid. '/'. $file);
+            unlink(__DIR__ . '/../images/'.$mapid. '/_compressed'. $file);
         }
         if($b !== "null"){
             $stmt = $conn->prepare("update photos set f = null where num = ? and map_id = ?");

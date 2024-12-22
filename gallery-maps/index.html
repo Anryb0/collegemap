@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery Maps</title>
-    <link rel="stylesheet" href="../all.css?43">
-    <link rel="stylesheet" href="styles/indexstyles.css?12">
+    <link rel="stylesheet" href="../all.css?30">
+    <link rel="stylesheet" href="styles/indexstyles.css?30">
     <link rel='icon' href='icon.png'>
 </head>
 <body>
@@ -17,11 +17,15 @@
             <button id='breg'>Регистрация</button>
         </div>
         <div id='loggedin'>
-            <a href='lk.html' id='lk'><span id='currentlogin'></span></a>
-            <button id='logout'>Выход</button>
+            <span id='currentlogin'></span>
+            <button id='showmenu'>⋯</button>
         </div>
     </header>
     <main>
+        <div id='usermenu'>
+            <a href='lk.html'>Мои публикации</a>
+            <button id='logout'>Выход</button>
+        </div>
         <hr id='tophr'>
         <div class="edit" id="edit">
             <div class="edit-elements">
@@ -29,7 +33,7 @@
                 <h2 id = 'h2'>Добавить локацию</h2>
                 <p>Название: <input type="text" id="i1" class="form"></p>
                 <p>Описание: <input type="text" id="i2" class="form"></p>
-                <p>Обложка локации (.jpg): <input type="file" id="i3" class="smallform"></p>
+                <p>Обложка локации: <input type="file" id="i3" class="smallform" accept=".jpg, .jpeg, .png" required></p>
                 <p>Рекомендуемый режим просмотра: <select id="ispanoram">
                     <option value='yes'>Панорама</option>
                     <option value='no'>Фото</option>
@@ -71,7 +75,7 @@
                 <button id="bregister">Регистрация</button>
             </div>
         </div>
-        <p id='toptext'><button id='bedit'>+ Добавить</button></p>
+        <p id='toptext'><span id='toptext1'></span><button id='bedit'>+ Добавить</button></p>
         <div id ="elements">
         </div>
     </main>
@@ -79,7 +83,7 @@
         <hr>
         <p>Anryb0 Corp. 2024.<a href='about.html'>Информация</a></p>
     </footer>
-    <script src="scripts/indexscript.js?7"></script>
-    <script src="../all.js?7"></script>
+    <script src="scripts/indexscript.js?30"></script>
+    <script src="../all.js?30"></script>
 </body>
 </html>

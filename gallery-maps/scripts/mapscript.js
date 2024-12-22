@@ -21,7 +21,6 @@ const sopisanie = document.getElementById('i9');
 let currentphoto = 0; // картинка по умолчанию
 let isInitialized = false; // флаг инициализации
 let l, r, f, b; // фотографии, которые находятся в разных направлениях относительно данной
-let scene, camera, renderer, plane; // объекты three.js
 let isUserInteracting = false; // флаг взаимодействует ли пользователь с картой
 
 let viewer, panorama; // объекты panolens
@@ -67,74 +66,98 @@ document.getElementById('logout').addEventListener('click', function() {
 });
 // при нажатии на кнопку отправки данных
 send.addEventListener('click', function() {
-    // данные для отправки на сервер
     let formData = new FormData();
-    formData.append('smapid', mapId);
-    formData.append('sf', sf);
-    formData.append('sb', sb);
-    formData.append('sl', sl);
-    formData.append('sr', sr);
-    formData.append('login', localStorage.getItem('login'));
+    formData.append('mapid', mapId);
     formData.append('name', sname.value);
-    formData.append('opisanie', sopisanie.value);
-    document.getElementById('percent').style.display = 'none'
-    pgbar.style.display = 'none';
-    sendinfo.style.display = 'none';
-    // запрос на сервер выполняется только если поля заполнены
-    if (file.files.length === 1 && sname.value && sopisanie.value) {
-        formData.append('file', file.files[0]);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'server/uploaddata.php', true);
-        pgbar.style.display = 'inline-block';
-        document.getElementById('percent').style.display = 'inline'
-        xhr.upload.onprogress = function(event) {
-            if (event.lengthComputable) {
-                var percent = (event.loaded / event.total) * 100;
-                pgbar.value = percent;
-                document.getElementById('percent').innerText = Math.round(percent) + ' %'
-            }
-        };
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log(xhr.responseText)
-                var data = JSON.parse(xhr.responseText);
-                if (data.success) {
-                    document.getElementById('percent').style.display = 'none'
-                    sendinfo.innerText = '✔';
-                    num2 = data.message;
-                    sendinfo.style.background = 'green';
-                    sendinfo.style.display = 'inline-block';
-                    formData = new FormData();
-                    formData.append('b', sb);
-                    formData.append('l', sl);
-                    formData.append('r', sr);
-                    formData.append('f', sf);
-                    formData.append('mapid', mapId);
-                    formData.append('num', num2);
-
-                    fetch('server/autocomplete.php', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    location.reload();
-                } else {
-                    sendinfo.innerText = data.message;
-                    sendinfo.style.background = 'red';
-                    sendinfo.style.display = 'inline-block';
+    fetch('server/uniqcheck2.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(response) {
+        if (!response.ok) {
+            throw new Error('Сеть не сработала: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        if (!data.success) {
+            sendinfo.innerText = data.message;
+            sendinfo.style.background = 'red';
+            sendinfo.style.display = 'inline-block';
+        }
+        else {
+            // данные для отправки на сервер
+            formData = new FormData();
+            formData.append('smapid', mapId);
+            formData.append('sf', sf);
+            formData.append('sb', sb);
+            formData.append('sl', sl);
+            formData.append('sr', sr);
+            formData.append('login', localStorage.getItem('login'));
+            formData.append('name', sname.value);
+            formData.append('opisanie', sopisanie.value);
+            formData.append('mapname' , urlParams.get('name'))
+            document.getElementById('percent').style.display = 'none'
+            pgbar.style.display = 'none';
+            sendinfo.style.display = 'none';
+            // запрос на сервер выполняется только если поля заполнены
+            if (file.files.length === 1 && sname.value && sopisanie.value && (file.files[0].type == 'image/jpeg' || file.files[0].type == 'image/png')) {
+                formData.append('file', file.files[0]);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'server/uploaddata.php', true);
+                pgbar.style.display = 'inline-block';
+                document.getElementById('percent').style.display = 'inline'
+                xhr.upload.onprogress = function(event) {
+                   var percent = (event.loaded / event.total) * 100;
+                        pgbar.value = percent;
+                        document.getElementById('percent').innerText = Math.round(percent) + ' %'
+                        if (percent >= 100) {
+                            pgbar.style.display = 'none';
+                            document.getElementById('percent').innerText = 'Обработка...';
+                        }
                 }
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data.success) {
+                            document.getElementById('percent').style.display = 'none'
+                            sendinfo.innerText = '✔';
+                            num2 = data.message;
+                            sendinfo.style.background = 'green';
+                            sendinfo.style.display = 'inline-block';
+                            formData = new FormData();
+                            formData.append('b', sb);
+                            formData.append('l', sl);
+                            formData.append('r', sr);
+                            formData.append('f', sf);
+                            formData.append('mapid', mapId);
+                            formData.append('num', num2);
+                            fetch('server/autocomplete.php', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            location.reload();
+                        } else {
+                            sendinfo.innerText = data.message;
+                            sendinfo.style.background = 'red';
+                            sendinfo.style.display = 'inline-block';
+                        }
+                    } else {
+                        sendinfo.innerText = 'Ошибка загрузки: ' + xhr.status;
+                        sendinfo.style.background = 'red';
+                        sendinfo.style.display = 'inline-block';
+                    }
+                    pgbar.style.display = 'none';
+                };
+                xhr.send(formData);
             } else {
-                sendinfo.innerText = 'Ошибка загрузки: ' + xhr.status;
+                sendinfo.innerText = 'Пожалуйста, заполните обязательные поля. Для каждой записи необходимо добавить по 1 фото PNG или JPG';
                 sendinfo.style.background = 'red';
                 sendinfo.style.display = 'inline-block';
             }
-            pgbar.style.display = 'none';
-        };
-        xhr.send(formData);
-    } else {
-        sendinfo.innerText = 'Пожалуйста, заполните обязательные поля. Для каждой записи необходимо добавить по 1 фото.';
-        sendinfo.style.background = 'red';
-        sendinfo.style.display = 'inline-block';
-    }
+        }
+    })
+   
 });
 
 // код для непанорамных карт 
@@ -154,7 +177,7 @@ if(ispanoram == '0'){
        init()
         if (photosData[photoId]){
             const img = new Image();
-            img.src = "https://anryb0.online/gallery-maps/images/" + photosData[photoId].photoUrl;
+            img.src = "images/" + urlParams.get('mapId') + '/' + photosData[photoId].photoUrl;
             img.onload = function() {
                 currentphoto = photoId
                 console.log(currentphoto)
@@ -320,7 +343,7 @@ if (ispanoram == '1') {
         currentphoto = photoId
         console.log(currentphoto)
         if (photosData[photoId]){
-            createImage('images/' + photosData[photoId].photoUrl);
+            createImage("images/" + urlParams.get('mapId') + '/' + photosData[photoId].photoUrl);
             l = photosData[photoId].l;
             r = photosData[photoId].r;
             f = photosData[photoId].f;
@@ -361,114 +384,107 @@ if (ispanoram == '1') {
     });
 }
 
+// код, который не зависит от того, панорамная карта или нет
+
+let selectedButton = null; 
 
 function relatedPhotos(photosData){
     if (photosData && photosData.length > 0) {
-        for(let i=0;i<photosData.length; i+=1){
-           elements.style.display = 'grid'
-           let newdiv = document.createElement('A');
-           newdiv.classList.add('element');
-           let newimg = document.createElement('IMG');
-           newimg.src = 'images/_compressed'+ photosData[i].photoUrl;
-           newimg.alt = 'Превью недоступно';
-           let newname = document.createElement('P');
-           newname.innerText= photosData[i].name;
-           newdiv.appendChild(newimg);
-           newdiv.appendChild(newname);
-           if(!photosData[i].b){
-               let bf = document.createElement('BUTTON');
-               bf.innerText = 'Сзади';
-               bf.classList.add('fbuttons');
-               let bfflag = false;
-               newdiv.appendChild(bf);
+        for (let i = 0; i < photosData.length; i += 1) {
+            elements.style.display = 'grid';
+            let newdiv = document.createElement('A');
+            newdiv.classList.add('element');
+
+            let newimg = document.createElement('IMG');
+            newimg.src = 'images/' + mapId + '/_compressed' + photosData[i].photoUrl;
+            newimg.alt = 'Превью недоступно';
+
+            let newname = document.createElement('P');
+            newname.innerText= photosData[i].name;
+
+            newdiv.appendChild(newimg);
+            newdiv.appendChild(newname);
+
+
+            function toggleButton(button, index, direction) {
+
+                if (selectedButton) {
+                    selectedButton.style.background = 'green'; и
+                }
+
+                selectedButton = button;
+                button.style.background = 'black';
+
+                if (direction === 'b') {
+                    sf = photosData[index].num;
+                    sl = sr = sb = ''; 
+                } else if (direction === 'r') {
+                    sl = photosData[index].num;
+                    sf = sr = sb = '';
+                } else if (direction === 'f') {
+                    sb = photosData[index].num;
+                    sf = sl = sr = '';
+                } else if (direction === 'l') {
+                    sr = photosData[index].num;
+                    sf = sl = sb = '';
+                }
+            }
+
+            if (!photosData[i].b) {
+                let bf = document.createElement('BUTTON');
+                bf.innerText = 'Сзади';
+                bf.classList.add('fbuttons', 'dbuttons');
+                newdiv.appendChild(bf);
                 bf.addEventListener('click', (function(index) {
                     return function() {
-                        if (bfflag) {
-                            bfflag = false;
-                            sf = ''; 
-                            bf.style.background = 'green';
-                        } else {
-                            bfflag = true;
-                            document.querySelectorAll('.fbuttons').forEach(button => button.style.background = 'green');
-                            bf.style.background = 'black';
-                            sf = photosData[index].num;
-                        }
+                        toggleButton(bf, index, 'b');
                     };
                 })(i));
-           }
-           if(!photosData[i].r){
-               let bl = document.createElement('BUTTON');
-               bl.innerText = 'Справа';
-               bl.classList.add('lbuttons');
-               let blflag = false;
-               newdiv.appendChild(bl);
-               bl.addEventListener('click', (function(index) {
+            }
+
+            if (!photosData[i].r) {
+                let bl = document.createElement('BUTTON');
+                bl.innerText = 'Справа';
+                bl.classList.add('lbuttons', 'dbuttons');
+                newdiv.appendChild(bl);
+                bl.addEventListener('click', (function(index) {
                     return function() {
-                        if (blflag) {
-                            blflag = false;
-                            sl = ''; 
-                            bl.style.background = 'green';
-                        } else {
-                            blflag = true;
-                            document.querySelectorAll('.lbuttons').forEach(button => button.style.background = 'green');
-                            bl.style.background = 'black';
-                            sl = photosData[index].num;
-                        }
+                        toggleButton(bl, index, 'r');
                     };
                 })(i));
-           }
-           if(!photosData[i].f){
-               let bb = document.createElement('BUTTON');
-               bb.innerText = 'Спереди';
-               bb.classList.add('bbuttons');
-               newdiv.appendChild(bb); 
-               let bbflag = false;
-               bb.addEventListener('click', (function(index) {
+            }
+
+            if (!photosData[i].f) {
+                let bb = document.createElement('BUTTON');
+                bb.innerText = 'Спереди';
+                bb.classList.add('bbuttons', 'dbuttons');
+                newdiv.appendChild(bb);
+                bb.addEventListener('click', (function(index) {
                     return function() {
-                        if (bbflag) {
-                            bbflag = false;
-                            sb = ''; 
-                            bb.style.background = 'green';
-                        } else {
-                            bbflag = true;
-                            document.querySelectorAll('.bbuttons').forEach(button => button.style.background = 'green');
-                            bb.style.background = 'black';
-                            sb = photosData[index].num;
-                        }
+                        toggleButton(bb, index, 'f');
                     };
                 })(i));
-           }
-           if(!photosData[i].l){
-               let br = document.createElement('BUTTON');
-               br.innerText = 'Слева';
-               br.classList.add('rbuttons');
-               newdiv.appendChild(br);
-               let brflag = false;
-               br.addEventListener('click', (function(index) {
+            }
+
+            if (!photosData[i].l) {
+                let br = document.createElement('BUTTON');
+                br.innerText = 'Слева';
+                br.classList.add('rbuttons', 'dbuttons');
+                newdiv.appendChild(br);
+                br.addEventListener('click', (function(index) {
                     return function() {
-                        if (brflag) {
-                            brflag = false;
-                            sr = ''; 
-                            br.style.background = 'green';
-                        } else {
-                            brflag = true;
-                            document.querySelectorAll('.rbuttons').forEach(button => button.style.background = 'green');
-                            br.style.background = 'black';
-                            sr = photosData[index].num;
-                        }
+                        toggleButton(br, index, 'l');
                     };
                 })(i));
-           }
-           document.getElementById('elements').appendChild(newdiv);
+            }
+
+            document.getElementById('elements').appendChild(newdiv);
         }
-    } 
-    else {
+    } else {
         document.getElementById('opterror').innerText = "Пока у вас нет загруженных фото.";
         elements.style.display = 'none';
     }
 }
-
-// код, который не зависит от того, панорамная карта или нет
 
 // отправка запроса на сервер, получение данных и их запись в объект
 let formData = new FormData();

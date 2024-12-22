@@ -27,7 +27,7 @@ hr {
 .element p {
     margin: 5px;
 }
-.delbut {
+.delbut, .delbut2 {
     font-size: 12px;
     margin: 2px;
     padding: 3px;
@@ -36,4 +36,7 @@ hr {
 #pagename {
     flex: 3;
     text-align: center;
+}
+#posts2{
+    display:none;
 }

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery Maps</title>
-    <link rel="stylesheet" href="styles/aboutstyles.css?6">
-    <link rel="stylesheet" href="../all.css?43">
+    <link rel="stylesheet" href="styles/aboutstyles.css?30">
+    <link rel="stylesheet" href="../all.css?30">
     <link rel='icon' href='icon.png'>
 </head>
 <body>
@@ -18,13 +18,17 @@
         </div>
         <div id='loggedin'>
             <span id='currentlogin'></span>
-            <button id='logout'>Выход</button>
+            <button id='showmenu'>⋯</button>
         </div>
 
     </header>
 
     <main>
-                    <hr>
+    <div id='usermenu'>
+        <a href='lk.html'>Мои публикации</a>
+        <button id='logout'>Выход</button>
+    </div>
+    <hr>
     <div class="login" id="login">
             <div class="login-elements">
                 <span class="close">&times;</span>
@@ -108,9 +112,16 @@
                     <li>Изменения интерфейса</li>
                     <li>Добавлен раздел с публикациями пользователя, также там можно удалить фото</li>
                 </ul>
+                <h3>1.1</h3>
+                <ul>
+                    <li>Можно просматривать и удалять локации в разделе с публикациями</li>
+                    <li>Добавлены ограничения уникальности на названия</li>
+                    <li>Исправлена работа окна со связанными картинками</li>
+                    <li>Мелкие улучшения и исправления ошибок</li>
+                </ul>
         </div>
         <div id='maininfo'>
-            <p>Текущая версия: 1.0</p>
+            <p>Текущая версия: 1.1</p>
         </div>
     </div>
     </main>
@@ -118,6 +129,6 @@
         <hr>
         <p>Anryb0 Corp. 2024.</p>
     </footer>
-    <script src="../all.js?4"></script>
+    <script src="../all.js?30"></script>
 </body>
 </html>
